@@ -165,16 +165,10 @@ public class MenuPrincipal extends JFrame {
 
 		if(turnoPlayer1) {
 
-			try {
-				Thread.sleep(1000*5);
-				disparar(botonMisAtaques);
-				turnoPlayer1 = false;
-				turnoCPU();
 
-			} catch (InterruptedException e) {
-
-				e.printStackTrace();
-			}			
+			disparar(botonMisAtaques);
+			turnoPlayer1 = false;
+			turnoCPU();
 
 		}
 	}
@@ -186,7 +180,6 @@ public class MenuPrincipal extends JFrame {
 		//mientras cpu y player tengan barcos la partida esta en marcha
 
 		if(!turnoPlayer1) {
-			
 
 			ataque(player.getBotonesPlayer(), null);
 			turnoPlayer1 = true;
@@ -245,28 +238,36 @@ public class MenuPrincipal extends JFrame {
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
 			boton.setValorCelda(Cte.TOCADO);
+			
+			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");;
+			
 
 		}		
 
 		boton.asignarColorBoton();
 
-		comprobarSiHundido(boton);
-
-		comprobarSiTodosHundidos(player.getFlota());		
+		//comprobarSiTodosHundidos(player.getFlota());		
 
 	}
 
 	private boolean comprobarSiHundido(BotonesTablero b) {
 
 		boolean hundido = false;
-
-		Flota f = new Flota();
+		Flota flota = null;
+		
+		//Con el turno de player1 analizamos la flota cpu para saber danyos causados
+		if(turnoPlayer1) flota = cpu.getFlota();
+		
+		//Con el turno de CPU analizamos la flota cpu para saber danyos causados
+		if(!turnoPlayer1) flota = player.getFlota();
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = f.devuelveBarco(b.getPosX(), b.getPosY());
+			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY());
+			
+			hundido = barco.saberSiHundido();
 		}
-
+		
 		return hundido;
 	}	
 

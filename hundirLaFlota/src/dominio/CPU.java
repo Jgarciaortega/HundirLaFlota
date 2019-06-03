@@ -9,7 +9,6 @@ public class CPU extends Jugador {
 	private static final String listaNombres[] = {"Barbanegra","Jack Sparrow","Capitan Barbosa","Capitan Garfio"};
 
 	
-
 	//Constructor	
 
 	public CPU(String imagen) { 
@@ -28,7 +27,6 @@ public class CPU extends Jugador {
 	
 	//Metodos
 	
-
 	@Override
 	public void generarBarcos() {
 					
@@ -36,7 +34,6 @@ public class CPU extends Jugador {
 			this.flota.insertarBarco(b);
 			
 			b = new Barco(3);		
-			this.flota.insertarBarco(b);
-						
+			this.flota.insertarBarco(b);						
 	}
 }

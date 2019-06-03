@@ -24,6 +24,9 @@ public class Jugador1 extends Jugador{
 		// TODO		
 		Barco b = new Barco(3);		
 		this.flota.insertarBarco(b);
+		
+		Barco b2 = new Barco(4);
+		this.flota.insertarBarco(b2);
 
 
 	}
