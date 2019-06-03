@@ -25,6 +25,9 @@ public class CPU extends Jugador {
 		int aleatorio = (int) (Math.random() * 3);		
 		return listaNombres[aleatorio];
 	}
+	
+	//Metodos
+	
 
 	@Override
 	public void generarBarcos() {
@@ -34,10 +37,6 @@ public class CPU extends Jugador {
 			
 			b = new Barco(3);		
 			this.flota.insertarBarco(b);
-		
-				
+						
 	}
-
-
-
 }

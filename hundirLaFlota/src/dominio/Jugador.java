@@ -41,6 +41,13 @@ public abstract class Jugador {
 		//2.-
 		generarTablero();		
 	}	
+	
+	public Flota getFlota() {
+		
+		return flota;
+	}
+
+	
 
 	private void generarTablero() {
 
