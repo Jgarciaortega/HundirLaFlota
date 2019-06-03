@@ -7,12 +7,16 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -21,41 +25,49 @@ import dominio.CPU;
 import dominio.Cte;
 import dominio.Flota;
 import dominio.Jugador1;
+import java.awt.Font;
 
 public class MenuPrincipal extends JFrame {
 
 	private JPanel contentPane;	
-
+	private JLabel animacion;
 	private boolean turnoPlayer1; 
 
 	//TODO Inicializar correctamente
-	CPU cpu = new CPU("");
+	CPU cpu = new CPU();
 	Jugador1 player = new Jugador1("Pepe","");
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MenuPrincipal frame = new MenuPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	/**
-	 * Create the frame.
-	 */
-	public MenuPrincipal() {
+	public MenuPrincipal(URL imagenJugador, String NombreJugador) {
 
 		//INICIO INTERFAZ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenu mnJuego = new JMenu("Juego");
+		menuBar.add(mnJuego);
+
+		JMenuItem mntmIniciarPartida = new JMenuItem("Iniciar Partida");
+		mnJuego.add(mntmIniciarPartida);
+
+		JMenuItem mntmSalir = new JMenuItem("Salir");
+		mntmSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			}
+		});
+		mnJuego.add(mntmSalir);
+
+		JMenu mnAyuda = new JMenu("Ayuda");
+		menuBar.add(mnAyuda);
+
+		JMenuItem mntmReglas = new JMenuItem("Reglas");
+		mnAyuda.add(mntmReglas);
+
+		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
+		mnAyuda.add(mntmAcercaDe);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -64,18 +76,34 @@ public class MenuPrincipal extends JFrame {
 
 		JPanel panelNorte = new JPanel();
 		contentPane.add(panelNorte, BorderLayout.NORTH);
-		panelNorte.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panelNorte.setLayout(new BoxLayout(panelNorte, BoxLayout.X_AXIS));
+
+		JPanel panel_1 = new JPanel();
+		panelNorte.add(panel_1);
 
 		JLabel lblNewLabel = new JLabel("");
+		panel_1.add(lblNewLabel);
 		lblNewLabel.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/Avatar1.png")));
-		panelNorte.add(lblNewLabel);
 
-		JLabel lblNewLabel_2 = new JLabel("Aqu\u00ED ir\u00EDa animaci\u00F3n");
-		panelNorte.add(lblNewLabel_2);
+		JLabel label = new JLabel("");
+		panel_1.add(label);
+
+		JPanel panel_2 = new JPanel();
+		panelNorte.add(panel_2);
+
+		this.animacion = new JLabel("");
+		panel_2.add(animacion);
+
+		JPanel panel_3 = new JPanel();
+		panelNorte.add(panel_3);
+
+		JLabel lblNewLabel_4 = new JLabel(this.cpu.getNombreJugador());
+		lblNewLabel_4.setFont(new Font("Stencil", Font.PLAIN, 13));
+		panel_3.add(lblNewLabel_4);
 
 		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/Avatar 2.jpg")));
-		panelNorte.add(lblNewLabel_1);
+		panel_3.add(lblNewLabel_1);
+		lblNewLabel_1.setIcon(new ImageIcon(MenuPrincipal.class.getResource(this.cpu.getImagenJugador())));
 
 		JPanel panelOeste = new JPanel();
 		contentPane.add(panelOeste, BorderLayout.WEST);
@@ -89,10 +117,15 @@ public class MenuPrincipal extends JFrame {
 
 		JPanel panelTablero1 = new JPanel();
 		panelTablero.add(panelTablero1);
-		panelTablero1.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
+		GridLayout gl_panelTablero1 = new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS);
+		panelTablero1.setLayout(gl_panelTablero1);
 
 		JPanel panel = new JPanel();
 		panelTablero.add(panel);
+
+		JLabel lblNewLabel_3 = new JLabel("");
+		lblNewLabel_3.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/transparentegrande.png")));
+		panel.add(lblNewLabel_3);
 
 		JPanel panelTablero2 = new JPanel();
 		panelTablero.add(panelTablero2);
@@ -165,10 +198,16 @@ public class MenuPrincipal extends JFrame {
 
 		if(turnoPlayer1) {
 
+			try {
+				Thread.sleep(1000*5);
+				disparar(botonMisAtaques);
+				turnoPlayer1 = false;
+				turnoCPU();
 
-			disparar(botonMisAtaques);
-			turnoPlayer1 = false;
-			turnoCPU();
+			} catch (InterruptedException e) {
+
+				e.printStackTrace();
+			}			
 
 		}
 	}
@@ -180,6 +219,7 @@ public class MenuPrincipal extends JFrame {
 		//mientras cpu y player tengan barcos la partida esta en marcha
 
 		if(!turnoPlayer1) {
+
 
 			ataque(player.getBotonesPlayer(), null);
 			turnoPlayer1 = true;
@@ -233,41 +273,37 @@ public class MenuPrincipal extends JFrame {
 		if(boton.getValorCelda() == Cte.INTACTO) {
 
 			boton.setValorCelda(Cte.AGUA);
+			
+
 		}
 
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
 			boton.setValorCelda(Cte.TOCADO);
-			
-			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");;
-			
 
 		}		
-
+		
+		generarAnimacion(boton);
+		
 		boton.asignarColorBoton();
 
-		//comprobarSiTodosHundidos(player.getFlota());		
+		comprobarSiHundido(boton);
+
+		comprobarSiTodosHundidos(player.getFlota());		
 
 	}
 
 	private boolean comprobarSiHundido(BotonesTablero b) {
 
 		boolean hundido = false;
-		Flota flota = null;
-		
-		//Con el turno de player1 analizamos la flota cpu para saber danyos causados
-		if(turnoPlayer1) flota = cpu.getFlota();
-		
-		//Con el turno de CPU analizamos la flota cpu para saber danyos causados
-		if(!turnoPlayer1) flota = player.getFlota();
+
+		Flota f = new Flota();
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY());
-			
-			hundido = barco.saberSiHundido();
+			Barco barco = f.devuelveBarco(b.getPosX(), b.getPosY());
 		}
-		
+
 		return hundido;
 	}	
 
@@ -276,6 +312,32 @@ public class MenuPrincipal extends JFrame {
 
 
 		return true;
+	}
+	
+	
+	
+	//TODO acabar la animacion
+	private void generarAnimacion(BotonesTablero boton) {
+		
+		if(boton.getValorCelda() == Cte.AGUA) {
+			
+			this.animacion.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/aguacayendo.gif")));
+			
+			/*try {
+				
+				
+			this.animacion.setVisible(false);
+				
+			} catch ( InterruptedException e) {
+				
+				e.printStackTrace();
+			}
+			*/
+			
+	
+		}
+		
+		
 	}
 
 }
