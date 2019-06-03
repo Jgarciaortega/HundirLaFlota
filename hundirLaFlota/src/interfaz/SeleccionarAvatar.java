@@ -377,6 +377,7 @@ public class SeleccionarAvatar extends JFrame {
 		this.juego = new MenuPrincipal(imagenRuta, this.textNombre.getText());
 		this.juego.setVisible(true);
 		this.juego.setExtendedState(MAXIMIZED_BOTH);
+		dispose();
 		
 		
 	}

@@ -14,9 +14,6 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -25,12 +22,17 @@ import dominio.CPU;
 import dominio.Cte;
 import dominio.Flota;
 import dominio.Jugador1;
-import java.awt.Font;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JMenu;
 
 public class MenuPrincipal extends JFrame {
 
-	private JPanel contentPane;	
-	private JLabel animacion;
+	private JPanel contentPane;
+	private JPanel panelTablero;
+	private JPanel panelTablero1;
+
+
 	private boolean turnoPlayer1; 
 
 	//TODO Inicializar correctamente
@@ -38,36 +40,32 @@ public class MenuPrincipal extends JFrame {
 	Jugador1 player = new Jugador1("Pepe","");
 
 
-	public MenuPrincipal(URL imagenJugador, String NombreJugador) {
+	public MenuPrincipal(URL imagenRuta, String nombreJugador) {
 
 		//INICIO INTERFAZ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 700);
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
 		JMenu mnJuego = new JMenu("Juego");
 		menuBar.add(mnJuego);
 
-		JMenuItem mntmIniciarPartida = new JMenuItem("Iniciar Partida");
-		mnJuego.add(mntmIniciarPartida);
+		JMenuItem mntmNuevoJuego = new JMenuItem("Nuevo Juego");
+		mnJuego.add(mntmNuevoJuego);
 
 		JMenuItem mntmSalir = new JMenuItem("Salir");
-		mntmSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			}
-		});
 		mnJuego.add(mntmSalir);
 
-		JMenu mnAyuda = new JMenu("Ayuda");
-		menuBar.add(mnAyuda);
+		JMenu mnReglas = new JMenu("Ayuda");
+		menuBar.add(mnReglas);
 
-		JMenuItem mntmReglas = new JMenuItem("Reglas");
-		mnAyuda.add(mntmReglas);
+		JMenuItem mntmReglasDelJuego = new JMenuItem("Reglas del Juego");
+		mnReglas.add(mntmReglasDelJuego);
 
-		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
-		mnAyuda.add(mntmAcercaDe);
+		JMenu mnAcercaDe = new JMenu("Acerca de");
+		mnReglas.add(mnAcercaDe);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -83,23 +81,19 @@ public class MenuPrincipal extends JFrame {
 
 		JLabel lblNewLabel = new JLabel("");
 		panel_1.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/Avatar1.png")));
-
-		JLabel label = new JLabel("");
-		panel_1.add(label);
+		lblNewLabel.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/JackSparrow.png")));
 
 		JPanel panel_2 = new JPanel();
 		panelNorte.add(panel_2);
 
-		this.animacion = new JLabel("");
-		panel_2.add(animacion);
+		JLabel lblNewLabel_2 = new JLabel("Aqu\u00ED ir\u00EDa animaci\u00F3n");
+		panel_2.add(lblNewLabel_2);
 
 		JPanel panel_3 = new JPanel();
 		panelNorte.add(panel_3);
 
-		JLabel lblNewLabel_4 = new JLabel(this.cpu.getNombreJugador());
-		lblNewLabel_4.setFont(new Font("Stencil", Font.PLAIN, 13));
-		panel_3.add(lblNewLabel_4);
+		JLabel nombreCPU = new JLabel(this.cpu.nombreJugador);
+		panel_3.add(nombreCPU);
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		panel_3.add(lblNewLabel_1);
@@ -111,21 +105,16 @@ public class MenuPrincipal extends JFrame {
 		JPanel panelSur = new JPanel();
 		contentPane.add(panelSur, BorderLayout.SOUTH);
 
-		JPanel panelTablero = new JPanel();
+		panelTablero = new JPanel();
 		contentPane.add(panelTablero, BorderLayout.CENTER);
 		panelTablero.setLayout(new BoxLayout(panelTablero, BoxLayout.X_AXIS));
 
-		JPanel panelTablero1 = new JPanel();
+		panelTablero1 = new JPanel();
 		panelTablero.add(panelTablero1);
-		GridLayout gl_panelTablero1 = new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS);
-		panelTablero1.setLayout(gl_panelTablero1);
+		panelTablero1.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
 
 		JPanel panel = new JPanel();
 		panelTablero.add(panel);
-
-		JLabel lblNewLabel_3 = new JLabel("");
-		lblNewLabel_3.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/transparentegrande.png")));
-		panel.add(lblNewLabel_3);
 
 		JPanel panelTablero2 = new JPanel();
 		panelTablero.add(panelTablero2);
@@ -198,16 +187,9 @@ public class MenuPrincipal extends JFrame {
 
 		if(turnoPlayer1) {
 
-			try {
-				Thread.sleep(1000*5);
-				disparar(botonMisAtaques);
-				turnoPlayer1 = false;
-				turnoCPU();
-
-			} catch (InterruptedException e) {
-
-				e.printStackTrace();
-			}			
+			disparar(botonMisAtaques);
+			turnoPlayer1 = false;
+			turnoCPU();
 
 		}
 	}
@@ -220,8 +202,7 @@ public class MenuPrincipal extends JFrame {
 
 		if(!turnoPlayer1) {
 
-
-			ataque(player.getBotonesPlayer(), null);
+			ataqueCPU(player.getBotonesPlayer(), null, false);
 			turnoPlayer1 = true;
 
 
@@ -229,39 +210,71 @@ public class MenuPrincipal extends JFrame {
 	}
 
 
-	private void ataque(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
+	private void ataqueCPU(ArrayList<BotonesTablero> botones, BotonesTablero boton, Boolean impacto) {
 
 		//Celda que va a recibir un ataque aleatorio
-		int posicionAtacada;
+		int posicionAtacada = 0;
 		//Celda que ya ha recibido un impacto y se tiene en cuenta para proximo ataque
 		int celdaImpactada;
-		boolean impacto = false;
+		
+		//Guarda un segundo impacto seguido, ya que sabe la posicion en la que esta
+		int memoriaCpu = 0;
 
 		//Si el ataque no viene precedido de un impacto, realiza un ataque aleatorio sobre el tablero del player
 		if(!impacto) {
 			//Seleccion de ataque aleatorio
 			posicionAtacada = (int) (Math.random() * 100);
 			boton = botones.get(posicionAtacada);
+			
 
 		}else {
+			
+			//Si no hay nada en la memoria disparo aleatorio sobre la posicion atacada previamente
+			if(memoriaCpu == 0) {
+				
+				//Ataque derecha
+				if(posicionAtacada != 99) { 
+					
+					posicionAtacada = posicionAtacada +1;
+					System.out.println(posicionAtacada);
 
-			//TODO Crear la inteligencia artificial CPU tras impactar en un barco del player
+				}else{
+
+					posicionAtacada = posicionAtacada -1;
+				}
+
+				/*
+				//Ataque izquierda
+				if(posicionAtacada != 0) posicionAtacada = posicionAtacada -1;
+
+				//Ataque arriba
+				if(posicionAtacada < 10) posicionAtacada = posicionAtacada +10;
+
+				//Ataque abajo
+				if(posicionAtacada > 89) posicionAtacada = posicionAtacada -10;
+				 */
+
+			}
+			//Si hay algo en la memoria disparar segun ella
+
+
 
 		}
 
 		//Disparamos sobre la posicion indicada
 		disparar(boton);
 
+		boton = botones.get(posicionAtacada);
+		
 		//Si se produce impacto...
-		impacto = (boton.getValorCelda() == Cte.TOCADO) ?true:false;
+		impacto = (boton.getValorCelda() == Cte.TOCADO) ? true : false;
 
 		//...sigue tirando hasta que falle 
 		if(impacto) {
-
 			//Si impacta sobre barco comprobar si todos los barcos del player estan hundidos
 			comprobarSiTodosHundidos(player.getFlota());
 
-			ataque(botones,boton);		
+			ataqueCPU(botones,boton,impacto);		
 		}
 
 	}
@@ -273,35 +286,39 @@ public class MenuPrincipal extends JFrame {
 		if(boton.getValorCelda() == Cte.INTACTO) {
 
 			boton.setValorCelda(Cte.AGUA);
-			
-
 		}
 
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
 			boton.setValorCelda(Cte.TOCADO);
 
+			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");;
+
+
 		}		
-		
-		generarAnimacion(boton);
-		
+
 		boton.asignarColorBoton();
 
-		comprobarSiHundido(boton);
-
-		comprobarSiTodosHundidos(player.getFlota());		
+		//comprobarSiTodosHundidos(player.getFlota());		
 
 	}
 
 	private boolean comprobarSiHundido(BotonesTablero b) {
 
 		boolean hundido = false;
+		Flota flota = null;
 
-		Flota f = new Flota();
+		//Con el turno de player1 analizamos la flota cpu para saber danyos causados
+		if(turnoPlayer1) flota = cpu.getFlota();
+
+		//Con el turno de CPU analizamos la flota cpu para saber danyos causados
+		if(!turnoPlayer1) flota = player.getFlota();
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = f.devuelveBarco(b.getPosX(), b.getPosY());
+			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY());
+
+			hundido = barco.saberSiHundido();
 		}
 
 		return hundido;
@@ -311,33 +328,8 @@ public class MenuPrincipal extends JFrame {
 	private boolean comprobarSiTodosHundidos(Flota flota) {
 
 
+
 		return true;
-	}
-	
-	
-	
-	//TODO acabar la animacion
-	private void generarAnimacion(BotonesTablero boton) {
-		
-		if(boton.getValorCelda() == Cte.AGUA) {
-			
-			this.animacion.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/aguacayendo.gif")));
-			
-			/*try {
-				
-				
-			this.animacion.setVisible(false);
-				
-			} catch ( InterruptedException e) {
-				
-				e.printStackTrace();
-			}
-			*/
-			
-	
-		}
-		
-		
 	}
 
 }

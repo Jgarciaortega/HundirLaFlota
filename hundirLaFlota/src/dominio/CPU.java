@@ -68,7 +68,7 @@ public class CPU extends Jugador {
 		case 0: imagen = "/interfaz/img/Barba_negra.png";
  				break;
  				
-		case 1:	imagen = "/interfaz/img/jacksparrow.png";
+		case 1:	imagen = "/interfaz/img/JackSparrow.png";
 				break;
 				
 		case 2: imagen = "/interfaz/img/barbosa.png";

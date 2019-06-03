@@ -1,6 +1,8 @@
 package interfaz;
 
 import java.awt.Color;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 import dominio.Cte;
@@ -57,16 +59,26 @@ public class BotonesTablero extends JButton {
 	public void asignarColorBoton() {
 
 		//Intacto
-		if(this.valorCelda == Cte.INTACTO) this.setBackground(Color.BLUE);
+		if(this.valorCelda == Cte.INTACTO) {
+			this.setBackground(Color.BLUE);
+		}
 
 		//Agua
-		if(this.valorCelda == Cte.AGUA) this.setBackground(Color.GREEN); 
+		if(this.valorCelda == Cte.AGUA) {
+			this.setBackground(Color.CYAN);
+			this.setIcon(new ImageIcon(BotonesTablero.class.getResource("/interfaz/img/bombaAgua.png")));
+		}
 
 		//Tocado
-		if(this.valorCelda == Cte.TOCADO) this.setBackground(Color.RED);
+		if(this.valorCelda == Cte.TOCADO) {
+			this.setBackground(Color.RED);
+			this.setIcon(new ImageIcon(BotonesTablero.class.getResource("/interfaz/img/explosion.png")));
+		}
 		
 		//Hundido
-		if(this.valorCelda == Cte.HUNDIDO) this.setBackground(Color.BLACK);
+		if(this.valorCelda == Cte.HUNDIDO) {
+			this.setBackground(Color.BLACK);
+		}
 
 	}	
 
