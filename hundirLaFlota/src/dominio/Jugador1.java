@@ -21,11 +21,15 @@ public class Jugador1 extends Jugador{
 	@Override
 	public void generarBarcos() {
 
-		// TODO		
+		// TODO
+			
 		Barco b = new Barco(3);		
 		this.flota.insertarBarco(b);
 		
 		Barco b2 = new Barco(4);
+		this.flota.insertarBarco(b2);
+		
+		Barco b1 = new Barco(2);
 		this.flota.insertarBarco(b2);
 
 

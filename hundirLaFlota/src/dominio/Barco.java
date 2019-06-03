@@ -78,12 +78,21 @@ public class Barco {
 	}
 
 	public boolean saberSiHundido() {
-		
+
 		for(int i = 0; i < this.tamanyo ; i ++) {
-			
-			this.hundido = (this.valores[i] == Cte.HAY_BARCO) ?false:true; 
-			
+
+			if (this.hundido = (this.valores[i] == Cte.HAY_BARCO)){
+				
+				this.hundido = false; 
+				break;
+				
+			}else {
+				
+				this.hundido = true;
+			}
+
 		}
+
 		return this.hundido;
 	}
 
