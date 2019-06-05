@@ -77,6 +77,7 @@ public class MenuPrincipal extends JFrame {
 		panelNorte.setLayout(new BoxLayout(panelNorte, BoxLayout.X_AXIS));
 
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GRAY);
 		panelNorte.add(panel_1);
 
 		JLabel lblNewLabel = new JLabel("");
@@ -316,20 +317,28 @@ public class MenuPrincipal extends JFrame {
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY());
-
+			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY(),true);			
 			hundido = barco.saberSiHundido();
 		}
-
+		
 		return hundido;
 	}	
 
 	//Este metodo devolvera true cuando la flota de cualquier jugador este destruida
 	private boolean comprobarSiTodosHundidos(Flota flota) {
 
+		ArrayList <Barco> listaBarcos = flota.misBarcos;
+		boolean todosHundidos = true;
+		
+		for(int i = 0; i < listaBarcos.size(); i ++) {
+			
+			Barco barco = listaBarcos.get(i);
 
+			if(!barco.saberSiHundido()) todosHundidos = false; break;
+		}
+		
 
-		return true;
+		return todosHundidos;
 	}
 
 }

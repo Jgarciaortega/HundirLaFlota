@@ -23,8 +23,9 @@ public class Flota {
 		this.misBarcos.add(b);
 	}
 
-
-	public Barco devuelveBarco(int posX, int posY) {
+	//Esta funcion devuelve un barco en las posiciones seleccionados. Si ademas ese barco tiene que recibir un impacto se modificara en esta misma funcion.
+	//Para impactar el barco debera llegar a esta funcion un true en el boolean impacto
+	public Barco devuelveBarco(int posX, int posY, Boolean impacto) {
 
 		int posicionesBarco [][]; 
 		Barco barco = null;
@@ -39,10 +40,11 @@ public class Flota {
 				//Si... coordenadas de disparo coinciden con posicion barco
 				if((posicionesBarco[x][y] == posX) && (posicionesBarco[x][y+1] == posY)) {		
 
-					//Obtenemos el barco que ha recibido el disparo
+					//Obtenemos el barco que coincide con las coordenadas
 					barco = misBarcos.get(i);
-					//Aplicamos el danyo correspondiente al barco
-					barco.setValorATocado(x);
+					//Si ha de recibir impacto se setea en este if
+					if(impacto) barco.setValorATocado(x);
+					
 					break;
 				}			
 
