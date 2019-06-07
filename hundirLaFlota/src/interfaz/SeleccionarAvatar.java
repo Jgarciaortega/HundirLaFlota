@@ -281,7 +281,7 @@ public class SeleccionarAvatar extends JFrame {
 		
 		JLabel fondo = new JLabel("");
 		fondo.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/fondo seleccion.png")));
-		fondo.setBounds(0, 0, 713, 441);
+		fondo.setBounds(0, 0, 729, 449);
 		contentPane.add(fondo);
 	}
 	

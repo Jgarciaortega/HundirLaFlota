@@ -248,50 +248,135 @@ public class MenuPrincipal extends JFrame {
 
 		if(!turnoPlayer1) {
 
-			ataque(player.getBotonesPlayer(), null);
+			ataqueCPU(player.getBotonesPlayer(), null);
 			turnoPlayer1 = true;
-
 
 		}
 	}
 
+	private void ataqueCPU(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
 
-	private void ataque(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
+		//Celda que va a recibir un ataque 
+		int posicionAtacada = 0;
 
-		//Celda que va a recibir un ataque aleatorio
-		int posicionAtacada;
 		//Celda que ya ha recibido un impacto y se tiene en cuenta para proximo ataque
 		int celdaImpactada;
-		boolean impacto = false;
 
-		//Si el ataque no viene precedido de un impacto, realiza un ataque aleatorio sobre el tablero del player
-		if(!impacto) {
-			//Seleccion de ataque aleatorio
-			posicionAtacada = (int) (Math.random() * 100);
+		String direccionAtaque;
+
+		//Si no hay impacto previo...
+		if(cpu.getCeldaImpactada() != -1) {
+
+			//Realizar hasta que se localice una celda valida...
+			do {
+
+				posicionAtacada = (int) (Math.random() * 99);
+
+			}while(comprobarValidezAtaque(botones, posicionAtacada));
+
+			//Obtenemos el boton con la posicion seleccionada
 			boton = botones.get(posicionAtacada);
 
+			//Retiramos la celda sobre la que hemos disparado para no repetir ataque en misma posicion
+			botones.remove(posicionAtacada);
+
+
+			//...si el ataque viene precedido de impacto
 		}else {
 
-			//TODO Crear la inteligencia artificial CPU tras impactar en un barco del player
+			direccionAtaque = elegirDireccion(botones);
 
+			if(direccionAtaque.equals("izquierda")) {
+
+				posicionAtacada = posicionAtacada -1;
+			}
+			if(direccionAtaque.equals("derecha")) {
+
+				posicionAtacada = posicionAtacada +1;
+			}
+			if(direccionAtaque.equals("arriba")) {
+
+				posicionAtacada = posicionAtacada -10;
+			}
+			if(direccionAtaque.equals("abajo")) {
+
+				posicionAtacada = posicionAtacada +10;
+			}
 		}
+
+		//Obtenemos boton sobre el que atacar
+		boton = botones.get(posicionAtacada);
 
 		//Disparamos sobre la posicion indicada
 		disparar(boton);
 
 		//Si se produce impacto...
-		impacto = (boton.getValorCelda() == Cte.TOCADO) ?true:false;
+		boolean impacto = (boton.getValorCelda() == Cte.TOCADO) ? true : false;
 
 		//...sigue tirando hasta que falle 
 		if(impacto) {
 
+			//Guardamos en registro cpu la celda que acabamos de alcanzar
+			cpu.setCeldaImpactada(posicionAtacada);
+
 			//Si impacta sobre barco comprobar si todos los barcos del player estan hundidos
 			comprobarSiTodosHundidos(player.getFlota());
 
-			ataque(botones,boton);		
+			ataqueCPU(botones,boton);		
+		}
+	}
+
+	private String elegirDireccion(ArrayList<BotonesTablero> botones) {
+
+		String direccionDisparo;
+		String posicionBarco = cpu.getPosicionBarco();
+		String direccionUltDisparo = cpu.getDireccionUltDisparo();
+		int celdaDisparada = cpu.getCeldaImpactada();
+
+		if(posicionBarco.equals("indefinido")) {
+
+			if(direccionUltDisparo.equals("indefinido")) {
+				
+				//comprobar alrededores
+				//y si impacta por segunda vez seteamos posicion barco
+
+			}else {
+				
+				//partimos desde la celda que hayamos impactado y seleccionamos el mismo eje de coordenadas para atacar
+
+			}
+
+		}else {
+
+			//algoritmo que decide disparar en el mismo eje de coordenadas
 		}
 
+		return null;
 	}
+
+	//Comprueba si la celda seleccionada puede recibir un ataque. No podra recibirlo si ya ha recibido un impacto...
+	private boolean comprobarValidezAtaque(ArrayList<BotonesTablero> botones, int posicionAtacada) {
+
+		boolean celdaYaAtacada = true;
+
+		try {
+
+			celdaYaAtacada = false;
+			botones.get(posicionAtacada);
+
+
+		}catch (IndexOutOfBoundsException ex) {
+
+			celdaYaAtacada = true;
+
+		}
+
+		return celdaYaAtacada;
+
+	}
+
+
+
 
 	//Recibe el boton sobre el que se ha disparado. Segun el impacto modifica su color y valor
 	private void disparar(BotonesTablero boton) {
@@ -330,8 +415,7 @@ public class MenuPrincipal extends JFrame {
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY(), hundido);
-
+			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY(),true);			
 			hundido = barco.saberSiHundido();
 		}
 
@@ -341,8 +425,18 @@ public class MenuPrincipal extends JFrame {
 	//Este metodo devolvera true cuando la flota de cualquier jugador este destruida
 	private boolean comprobarSiTodosHundidos(Flota flota) {
 
+		ArrayList <Barco> listaBarcos = flota.misBarcos;
+		boolean todosHundidos = true;
 
-		return true;
+		for(int i = 0; i < listaBarcos.size(); i ++) {
+
+			Barco barco = listaBarcos.get(i);
+
+			if(!barco.saberSiHundido()) todosHundidos = false; break;
+		}
+
+
+		return todosHundidos;
 	}
 
 }
