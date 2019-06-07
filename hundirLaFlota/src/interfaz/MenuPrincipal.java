@@ -25,13 +25,12 @@ import dominio.Jugador1;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JMenu;
+import java.awt.Font;
+import javax.swing.border.LineBorder;
 
 public class MenuPrincipal extends JFrame {
 
-	private JPanel contentPane;
-	private JPanel panelTablero;
-	private JPanel panelTablero1;
-
+	private PanelFondo contentPane;	
 
 	private boolean turnoPlayer1; 
 
@@ -40,7 +39,7 @@ public class MenuPrincipal extends JFrame {
 	Jugador1 player = new Jugador1("Pepe","");
 
 
-	public MenuPrincipal(URL imagenRuta, String nombreJugador) {
+	public MenuPrincipal(String imagenRuta, String nombreJugador) {
 
 		//INICIO INTERFAZ
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,58 +65,104 @@ public class MenuPrincipal extends JFrame {
 
 		JMenu mnAcercaDe = new JMenu("Acerca de");
 		mnReglas.add(mnAcercaDe);
-		contentPane = new JPanel();
+		contentPane = new PanelFondo();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setTitle("Hundir la Flota");
 
 		JPanel panelNorte = new JPanel();
+		panelNorte.setOpaque(false);
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 		panelNorte.setLayout(new BoxLayout(panelNorte, BoxLayout.X_AXIS));
+		
+		JPanel margen1 = new JPanel();
+		FlowLayout fl_margen1 = (FlowLayout) margen1.getLayout();
+		fl_margen1.setHgap(-70);
+		margen1.setOpaque(false);
+		panelNorte.add(margen1);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.GRAY);
+		PanelMarco panel_1 = new PanelMarco();
+		panel_1.setOpaque(false);
 		panelNorte.add(panel_1);
+		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.X_AXIS));
 
-		JLabel lblNewLabel = new JLabel("");
-		panel_1.add(lblNewLabel);
-		lblNewLabel.setIcon(new ImageIcon(MenuPrincipal.class.getResource("/interfaz/img/JackSparrow.png")));
+		JPanel panelMarco_1 = new JPanel();
+		panelMarco_1.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
+		panelMarco_1.setOpaque(false);
+		panel_1.add(panelMarco_1);
+
+		JLabel lblNewLabel = new JLabel();
+		panelMarco_1.add(lblNewLabel);
+		lblNewLabel.setIcon(new ImageIcon(MenuPrincipal.class.getResource(imagenRuta)));
+
+		JLabel label = new JLabel(nombreJugador);
+		label.setFont(new Font("Stencil", Font.PLAIN, 13));
+		panelMarco_1.add(label);
+		
+		JPanel margen2 = new JPanel();
+		margen2.setOpaque(false);
+		panelNorte.add(margen2);
 
 		JPanel panel_2 = new JPanel();
+		panel_2.setOpaque(false);
 		panelNorte.add(panel_2);
 
 		JLabel lblNewLabel_2 = new JLabel("Aqu\u00ED ir\u00EDa animaci\u00F3n");
 		panel_2.add(lblNewLabel_2);
+		
+		JPanel margen3 = new JPanel();
+		margen3.setOpaque(false);
+		panelNorte.add(margen3);
 
 		JPanel panel_3 = new JPanel();
+		panel_3.setOpaque(false);
 		panelNorte.add(panel_3);
+		panel_3.setLayout(new BoxLayout(panel_3, BoxLayout.X_AXIS));
+
+		PanelMarco panelMarco_2 = new PanelMarco();
+		panelMarco_2.setBorder(new LineBorder(Color.BLACK, 2));
+		panelMarco_2.setOpaque(false);
+		panel_3.add(panelMarco_2);
 
 		JLabel nombreCPU = new JLabel(this.cpu.nombreJugador);
-		panel_3.add(nombreCPU);
+		nombreCPU.setFont(new Font("Stencil", Font.PLAIN, 13));
+		panelMarco_2.add(nombreCPU);
 
 		JLabel lblNewLabel_1 = new JLabel("");
-		panel_3.add(lblNewLabel_1);
+		panelMarco_2.add(lblNewLabel_1);
 		lblNewLabel_1.setIcon(new ImageIcon(MenuPrincipal.class.getResource(this.cpu.getImagenJugador())));
+		
+		JPanel margen4 = new JPanel();
+		FlowLayout fl_margen4 = (FlowLayout) margen4.getLayout();
+		fl_margen4.setHgap(-75);
+		margen4.setOpaque(false);
+		panelNorte.add(margen4);
 
 		JPanel panelOeste = new JPanel();
+		panelOeste.setOpaque(false);
 		contentPane.add(panelOeste, BorderLayout.WEST);
 
 		JPanel panelSur = new JPanel();
+		panelSur.setOpaque(false);
 		contentPane.add(panelSur, BorderLayout.SOUTH);
 
-		panelTablero = new JPanel();
+		JPanel panelTablero = new JPanel();
+		panelTablero.setOpaque(false);
 		contentPane.add(panelTablero, BorderLayout.CENTER);
 		panelTablero.setLayout(new BoxLayout(panelTablero, BoxLayout.X_AXIS));
 
-		panelTablero1 = new JPanel();
+		JPanel panelTablero1 = new JPanel();
+		panelTablero1.setOpaque(false);
 		panelTablero.add(panelTablero1);
 		panelTablero1.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
 
 		JPanel panel = new JPanel();
+		panel.setOpaque(false);
 		panelTablero.add(panel);
 
 		JPanel panelTablero2 = new JPanel();
+		panelTablero2.setOpaque(false);
 		panelTablero.add(panelTablero2);
 		panelTablero2.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
 
@@ -203,135 +248,50 @@ public class MenuPrincipal extends JFrame {
 
 		if(!turnoPlayer1) {
 
-			ataqueCPU(player.getBotonesPlayer(), null);
+			ataque(player.getBotonesPlayer(), null);
 			turnoPlayer1 = true;
+
 
 		}
 	}
 
-	private void ataqueCPU(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
 
-		//Celda que va a recibir un ataque 
-		int posicionAtacada = 0;
+	private void ataque(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
 
+		//Celda que va a recibir un ataque aleatorio
+		int posicionAtacada;
 		//Celda que ya ha recibido un impacto y se tiene en cuenta para proximo ataque
 		int celdaImpactada;
+		boolean impacto = false;
 
-		String direccionAtaque;
-
-		//Si no hay impacto previo...
-		if(cpu.getCeldaImpactada() != -1) {
-
-			//Realizar hasta que se localice una celda valida...
-			do {
-
-				posicionAtacada = (int) (Math.random() * 99);
-
-			}while(comprobarValidezAtaque(botones, posicionAtacada));
-
-			//Obtenemos el boton con la posicion seleccionada
+		//Si el ataque no viene precedido de un impacto, realiza un ataque aleatorio sobre el tablero del player
+		if(!impacto) {
+			//Seleccion de ataque aleatorio
+			posicionAtacada = (int) (Math.random() * 100);
 			boton = botones.get(posicionAtacada);
 
-			//Retiramos la celda sobre la que hemos disparado para no repetir ataque en misma posicion
-			botones.remove(posicionAtacada);
-
-
-			//...si el ataque viene precedido de impacto
 		}else {
 
-			direccionAtaque = elegirDireccion(botones);
+			//TODO Crear la inteligencia artificial CPU tras impactar en un barco del player
 
-			if(direccionAtaque.equals("izquierda")) {
-
-				posicionAtacada = posicionAtacada -1;
-			}
-			if(direccionAtaque.equals("derecha")) {
-
-				posicionAtacada = posicionAtacada +1;
-			}
-			if(direccionAtaque.equals("arriba")) {
-
-				posicionAtacada = posicionAtacada -10;
-			}
-			if(direccionAtaque.equals("abajo")) {
-
-				posicionAtacada = posicionAtacada +10;
-			}
 		}
-
-		//Obtenemos boton sobre el que atacar
-		boton = botones.get(posicionAtacada);
 
 		//Disparamos sobre la posicion indicada
 		disparar(boton);
 
 		//Si se produce impacto...
-		boolean impacto = (boton.getValorCelda() == Cte.TOCADO) ? true : false;
+		impacto = (boton.getValorCelda() == Cte.TOCADO) ?true:false;
 
 		//...sigue tirando hasta que falle 
 		if(impacto) {
 
-			//Guardamos en registro cpu la celda que acabamos de alcanzar
-			cpu.setCeldaImpactada(posicionAtacada);
-
 			//Si impacta sobre barco comprobar si todos los barcos del player estan hundidos
 			comprobarSiTodosHundidos(player.getFlota());
 
-			ataqueCPU(botones,boton);		
-		}
-	}
-
-	private String elegirDireccion(ArrayList<BotonesTablero> botones) {
-
-		String direccionDisparo;
-		String posicionBarco = cpu.getPosicionBarco();
-		String direccionUltDisparo = cpu.getDireccionUltDisparo();
-		int celdaDisparada = cpu.getCeldaImpactada();
-
-		if(posicionBarco.equals("indefinido")) {
-
-			if(direccionUltDisparo.equals("indefinido")) {
-				
-				//comprobar alrededores
-				//y si impacta por segunda vez seteamos posicion barco
-
-			}else {
-				
-				//partimos desde la celda que hayamos impactado y seleccionamos el mismo eje de coordenadas para atacar
-
-			}
-
-		}else {
-
-			//algoritmo que decide disparar en el mismo eje de coordenadas
+			ataque(botones,boton);		
 		}
 
-		return null;
 	}
-
-	//Comprueba si la celda seleccionada puede recibir un ataque. No podra recibirlo si ya ha recibido un impacto...
-	private boolean comprobarValidezAtaque(ArrayList<BotonesTablero> botones, int posicionAtacada) {
-
-		boolean celdaYaAtacada = true;
-
-		try {
-
-			celdaYaAtacada = false;
-			botones.get(posicionAtacada);
-
-
-		}catch (IndexOutOfBoundsException ex) {
-
-			celdaYaAtacada = true;
-
-		}
-
-		return celdaYaAtacada;
-
-	}
-
-
-
 
 	//Recibe el boton sobre el que se ha disparado. Segun el impacto modifica su color y valor
 	private void disparar(BotonesTablero boton) {
@@ -370,7 +330,8 @@ public class MenuPrincipal extends JFrame {
 
 		if (b.getValorCelda() == Cte.TOCADO) {
 
-			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY(),true);			
+			Barco barco = flota.devuelveBarco(b.getPosX(), b.getPosY(), hundido);
+
 			hundido = barco.saberSiHundido();
 		}
 
@@ -380,18 +341,8 @@ public class MenuPrincipal extends JFrame {
 	//Este metodo devolvera true cuando la flota de cualquier jugador este destruida
 	private boolean comprobarSiTodosHundidos(Flota flota) {
 
-		ArrayList <Barco> listaBarcos = flota.misBarcos;
-		boolean todosHundidos = true;
 
-		for(int i = 0; i < listaBarcos.size(); i ++) {
-
-			Barco barco = listaBarcos.get(i);
-
-			if(!barco.saberSiHundido()) todosHundidos = false; break;
-		}
-
-
-		return todosHundidos;
+		return true;
 	}
 
 }
