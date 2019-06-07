@@ -152,8 +152,8 @@ public class MenuPrincipal extends JFrame {
 		contentPane.add(panelTablero, BorderLayout.CENTER);
 		panelTablero.setLayout(new BoxLayout(panelTablero, BoxLayout.X_AXIS));
 
-		JPanel panelTablero1 = new JPanel();
-		panelTablero1.setOpaque(false);
+		PanelTablero panelTablero1 = new PanelTablero();
+		panelTablero1.setOpaque(true);
 		panelTablero.add(panelTablero1);
 		panelTablero1.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
 
@@ -161,7 +161,7 @@ public class MenuPrincipal extends JFrame {
 		panel.setOpaque(false);
 		panelTablero.add(panel);
 
-		JPanel panelTablero2 = new JPanel();
+		PanelTablero panelTablero2 = new PanelTablero();
 		panelTablero2.setOpaque(false);
 		panelTablero.add(panelTablero2);
 		panelTablero2.setLayout(new GridLayout(Cte.NUM_FILAS, Cte.NUM_COLUMNAS));
