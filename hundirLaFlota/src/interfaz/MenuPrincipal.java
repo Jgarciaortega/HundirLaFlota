@@ -75,7 +75,7 @@ public class MenuPrincipal extends JFrame {
 		panelNorte.setOpaque(false);
 		contentPane.add(panelNorte, BorderLayout.NORTH);
 		panelNorte.setLayout(new BoxLayout(panelNorte, BoxLayout.X_AXIS));
-		
+
 		JPanel margen1 = new JPanel();
 		FlowLayout fl_margen1 = (FlowLayout) margen1.getLayout();
 		fl_margen1.setHgap(-70);
@@ -99,7 +99,7 @@ public class MenuPrincipal extends JFrame {
 		JLabel label = new JLabel(nombreJugador);
 		label.setFont(new Font("Stencil", Font.PLAIN, 13));
 		panelMarco_1.add(label);
-		
+
 		JPanel margen2 = new JPanel();
 		margen2.setOpaque(false);
 		panelNorte.add(margen2);
@@ -110,7 +110,7 @@ public class MenuPrincipal extends JFrame {
 
 		JLabel lblNewLabel_2 = new JLabel("Aqu\u00ED ir\u00EDa animaci\u00F3n");
 		panel_2.add(lblNewLabel_2);
-		
+
 		JPanel margen3 = new JPanel();
 		margen3.setOpaque(false);
 		panelNorte.add(margen3);
@@ -132,7 +132,7 @@ public class MenuPrincipal extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel("");
 		panelMarco_2.add(lblNewLabel_1);
 		lblNewLabel_1.setIcon(new ImageIcon(MenuPrincipal.class.getResource(this.cpu.getImagenJugador())));
-		
+
 		JPanel margen4 = new JPanel();
 		FlowLayout fl_margen4 = (FlowLayout) margen4.getLayout();
 		fl_margen4.setHgap(-75);
@@ -232,11 +232,12 @@ public class MenuPrincipal extends JFrame {
 	private void turnoPlayer(BotonesTablero botonMisAtaques) {
 
 		if(turnoPlayer1) {
+			//La funcion disparar devuelve un boolean cuando se dispara sobre una celda que no contiene un impacto previo
+			if (disparar(botonMisAtaques)) {
 
-			disparar(botonMisAtaques);
-			turnoPlayer1 = false;
-			turnoCPU();
-
+				turnoPlayer1 = false;
+				turnoCPU();
+			}
 		}
 	}
 
@@ -265,25 +266,23 @@ public class MenuPrincipal extends JFrame {
 		String direccionAtaque;
 
 		//Si no hay impacto previo...
-		if(cpu.getCeldaImpactada() != -1) {
+		if(cpu.getCeldaImpactada() == -1) {
 
 			//Realizar hasta que se localice una celda valida...
 			do {
 
 				posicionAtacada = (int) (Math.random() * 99);
 
-			}while(comprobarValidezAtaque(botones, posicionAtacada));
+			}while(!comprobarSiCeldaEsAtacable(botones, posicionAtacada));
 
 			//Obtenemos el boton con la posicion seleccionada
 			boton = botones.get(posicionAtacada);
-
-			//Retiramos la celda sobre la que hemos disparado para no repetir ataque en misma posicion
-			botones.remove(posicionAtacada);
 
 
 			//...si el ataque viene precedido de impacto
 		}else {
 
+			posicionAtacada = cpu.getCeldaImpactada();			
 			direccionAtaque = elegirDireccion(botones);
 
 			if(direccionAtaque.equals("izquierda")) {
@@ -316,87 +315,157 @@ public class MenuPrincipal extends JFrame {
 		//...sigue tirando hasta que falle 
 		if(impacto) {
 
+			System.out.println("impacto");
 			//Guardamos en registro cpu la celda que acabamos de alcanzar
 			cpu.setCeldaImpactada(posicionAtacada);
+
+			//Comprobar si hundido
+			if(comprobarSiHundido(boton)) {
+
+				System.out.println("hundido");
+			}
 
 			//Si impacta sobre barco comprobar si todos los barcos del player estan hundidos
 			comprobarSiTodosHundidos(player.getFlota());
 
-			ataqueCPU(botones,boton);		
+			//CPU vuelve a atacar
+			ataqueCPU(botones,boton);
+
+		}else {
+
+			if(cpu.getCeldaImpactada() != -1) {
+
+				cpu.setCeldaImpactada(posicionAtacada -1); 
+
+			}
 		}
 	}
 
 	private String elegirDireccion(ArrayList<BotonesTablero> botones) {
 
-		String direccionDisparo;
+		String direccionDisparo = null;
 		String posicionBarco = cpu.getPosicionBarco();
 		String direccionUltDisparo = cpu.getDireccionUltDisparo();
 		int celdaDisparada = cpu.getCeldaImpactada();
+		ArrayList <String> direccionesPosibles = new ArrayList <String>();;
+
+		//segun la celda sobre la que se haya hecho impacto deberemos analizar los alrededores
+		direccionesPosibles = comprobarAlrededores(celdaDisparada);
 
 		if(posicionBarco.equals("indefinido")) {
 
-			if(direccionUltDisparo.equals("indefinido")) {
-				
-				//comprobar alrededores
-				//y si impacta por segunda vez seteamos posicion barco
+			//elegimos de las posibilidades una aleatoria
+			int aleatorio = (int) Math.random () * direccionesPosibles.size();
+			direccionDisparo = direccionesPosibles.get(aleatorio);
 
-			}else {
-				
-				//partimos desde la celda que hayamos impactado y seleccionamos el mismo eje de coordenadas para atacar
-
-			}
 
 		}else {
 
-			//algoritmo que decide disparar en el mismo eje de coordenadas
-		}
-
-		return null;
-	}
-
-	//Comprueba si la celda seleccionada puede recibir un ataque. No podra recibirlo si ya ha recibido un impacto...
-	private boolean comprobarValidezAtaque(ArrayList<BotonesTablero> botones, int posicionAtacada) {
-
-		boolean celdaYaAtacada = true;
-
-		try {
-
-			celdaYaAtacada = false;
-			botones.get(posicionAtacada);
 
 
-		}catch (IndexOutOfBoundsException ex) {
-
-			celdaYaAtacada = true;
 
 		}
 
-		return celdaYaAtacada;
+
+
+		//si no hay nada en memoria cpu realizar una eleccion aleatoria sobre el arraylist de direcciones
+
+
+
+
+
+		//y si impacta por segunda vez seteamos posicion barco
+
+
+
+		return direccionDisparo;
+	}
+
+	//Para analizar la celda sobre la que disparar hay que analizar sus digitos:
+	// 0 o 9 suponen fin de eje X o Y. 
+	private ArrayList<String> comprobarAlrededores(int celdaDisparada) {
+
+		String celdaDisparadaStr = null;
+		char caracter;
+		char coordenadaX = 'a';
+		char coordenadaY = 'a' ;
+		ArrayList <String> direccionesPosibles = new ArrayList <String>();
+
+		celdaDisparadaStr = Integer.toString(celdaDisparada);
+
+		for (int i = 0; i < celdaDisparadaStr.length(); i++) {
+
+			caracter = celdaDisparadaStr.charAt(i);
+
+			if (i == 0) coordenadaY = caracter;
+			if (i == 1) coordenadaX = caracter;
+
+		}
+
+		//Direcciones posibles que puede tomar la cpu
+		direccionesPosibles.add("izquierda");
+		direccionesPosibles.add("derecha");
+		direccionesPosibles.add("arriba");
+		direccionesPosibles.add("abajo");
+
+		//Eliminamos las posibles direcciones que no se pueden tomar dependiendo de su posicion
+
+		//Si Y vale 0 anulamos direccion izquierda
+		if(coordenadaY == '0') direccionesPosibles.remove(0);
+
+		//Si Y vale 9 anulamos direccion derecha
+		if(coordenadaY == '9') direccionesPosibles.remove(1);
+
+		//Si X vale 9 anulamos direccion abajo
+		if(coordenadaX == '0') direccionesPosibles.remove(4);
+
+
+		return direccionesPosibles;
+
 
 	}
 
+	//Comprueba si la celda seleccionada puede recibir un ataque. No podra recibirlo si su estado es diferente a intacto o hay barco
+	private boolean comprobarSiCeldaEsAtacable(ArrayList<BotonesTablero> botones, int posicionAtacada) {
 
+		boolean atacable = false;
+		BotonesTablero boton;
 
+		boton = botones.get(posicionAtacada);
+
+		if (boton.getValorCelda() == Cte.INTACTO) atacable = true;
+
+		if (boton.getValorCelda() == Cte.HAY_BARCO) atacable = true;
+
+		return atacable;
+
+	}
 
 	//Recibe el boton sobre el que se ha disparado. Segun el impacto modifica su color y valor
-	private void disparar(BotonesTablero boton) {
+	private boolean disparar(BotonesTablero boton) {
+
+		boolean disparoEfectuado = false;
 
 		//Si en la celda ya se ha producido un disparo no permitimos disparo sobre ella de nuevo
 		if(boton.getValorCelda() == Cte.INTACTO) {
 
 			boton.setValorCelda(Cte.AGUA);
+			disparoEfectuado = true;
 		}
 
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
 			boton.setValorCelda(Cte.TOCADO);
+			disparoEfectuado = true;
 
-			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");;
+			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");
 
 
 		}		
 
 		boton.asignarColorBoton();
+
+		return disparoEfectuado;
 
 		//comprobarSiTodosHundidos(player.getFlota());		
 
