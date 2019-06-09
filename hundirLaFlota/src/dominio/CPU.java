@@ -69,11 +69,11 @@ public class CPU extends Jugador {
 		this.posicionBarco = posicionBarco;
 	}
 
-	public String getDireccionUltDisparo() {
+	public String getDireccionUltDisparoFallado() {
 		return direccionUltDisparo;
 	}
 
-	public void setDireccionUltDisparo(String direccionUltDisparo) {
+	public void setDireccionUltDisparoFallado(String direccionUltDisparo) {
 		this.direccionUltDisparo = direccionUltDisparo;
 	}
 

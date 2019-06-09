@@ -263,7 +263,8 @@ public class MenuPrincipal extends JFrame {
 		//Celda que ya ha recibido un impacto y se tiene en cuenta para proximo ataque
 		int celdaImpactada;
 
-		String direccionAtaque;
+		//La direccion que tomara el ataque con respecto a la celda previamente impactada
+		String direccionAtaque = "";
 
 		//Si no hay impacto previo...
 		if(cpu.getCeldaImpactada() == -1) {
@@ -278,12 +279,12 @@ public class MenuPrincipal extends JFrame {
 			//Obtenemos el boton con la posicion seleccionada
 			boton = botones.get(posicionAtacada);
 
-
 			//...si el ataque viene precedido de impacto
 		}else {
 
 			posicionAtacada = cpu.getCeldaImpactada();			
 			direccionAtaque = elegirDireccion(botones);
+			System.out.println(direccionAtaque);
 
 			if(direccionAtaque.equals("izquierda")) {
 
@@ -303,6 +304,8 @@ public class MenuPrincipal extends JFrame {
 			}
 		}
 
+
+
 		//Obtenemos boton sobre el que atacar
 		boton = botones.get(posicionAtacada);
 
@@ -315,70 +318,144 @@ public class MenuPrincipal extends JFrame {
 		//...sigue tirando hasta que falle 
 		if(impacto) {
 
-			System.out.println("impacto");
+			//Si entra aqui es porque ha habido mas de un impacto.Ya podemos averiguar la posicion en la que esta(vertical-horizontal)
+			if(cpu.getCeldaImpactada() != -1) {
+
+				cpu.setPosicionBarco(averiguarPosicionBarco(boton));  
+
+			}
+
 			//Guardamos en registro cpu la celda que acabamos de alcanzar
 			cpu.setCeldaImpactada(posicionAtacada);
 
 			//Comprobar si hundido
 			if(comprobarSiHundido(boton)) {
 
-				System.out.println("hundido");
-			}
+				reiniciarMemoriaCPU();
+				//Comprobamos si aun quedan barcos en la flota del player
+				if(comprobarSiTodosHundidos(player.getFlota())) {
 
-			//Si impacta sobre barco comprobar si todos los barcos del player estan hundidos
-			comprobarSiTodosHundidos(player.getFlota());
+					//TODO programar fin de juego
+					System.out.println("FIN DE JUEGO");
+				}
+
+			}
 
 			//CPU vuelve a atacar
 			ataqueCPU(botones,boton);
 
 		}else {
 
+			//Falla pero ha habido un impacto previo...
 			if(cpu.getCeldaImpactada() != -1) {
+				//...si ya sabe la posicion del barco guardamos la posicion fallada para tenerla en cuenta en la eleccion proximo disparo
+				if(cpu.getPosicionBarco() != "indefinido") {
 
-				cpu.setCeldaImpactada(posicionAtacada -1); 
+					cpu.setDireccionUltDisparoFallado(direccionAtaque);
 
+				}
 			}
 		}
 	}
 
+	private String averiguarPosicionBarco(BotonesTablero boton) {
+
+		Flota flota = player.getFlota();
+		Barco barco;
+		String posicion;
+		int [][] posiciones;
+		int x = boton.getPosX();
+		int y = boton.getPosY();
+
+		barco = flota.devuelveBarco(x, y, false);
+		posiciones = barco.posiciones;
+
+		if (posiciones[0][0] == posiciones[1][0]) posicion = "horizontal";
+
+		else posicion = "vertical";		
+
+		return posicion;
+	}
+
+	private void reiniciarMemoriaCPU() {
+
+		cpu.setCeldaImpactada(-1);
+		cpu.setPosicionBarco("indefinido");
+		cpu.setDireccionUltDisparoFallado("indefinido");
+
+	}
+
 	private String elegirDireccion(ArrayList<BotonesTablero> botones) {
 
-		String direccionDisparo = null;
+		String direccionDisparo = "";
 		String posicionBarco = cpu.getPosicionBarco();
-		String direccionUltDisparo = cpu.getDireccionUltDisparo();
+		String direccionUltDisparoFallado = cpu.getDireccionUltDisparoFallado();		
+
+		direccionDisparo = obtenerDireccion(botones);
+
+		return direccionDisparo;
+	}
+
+
+	private String obtenerDireccion(ArrayList<BotonesTablero> botones) {
+
 		int celdaDisparada = cpu.getCeldaImpactada();
-		ArrayList <String> direccionesPosibles = new ArrayList <String>();;
+		BotonesTablero boton;
+		ArrayList <String> direccionesPosibles = new ArrayList <String>();
+		String direccionDisparo ="";
 
 		//segun la celda sobre la que se haya hecho impacto deberemos analizar los alrededores
 		direccionesPosibles = comprobarAlrededores(celdaDisparada);
 
-		if(posicionBarco.equals("indefinido")) {
+		for(int i = 0; i < direccionesPosibles.size(); i++) {
 
-			//elegimos de las posibilidades una aleatoria
-			int aleatorio = (int) Math.random () * direccionesPosibles.size();
-			direccionDisparo = direccionesPosibles.get(aleatorio);
+			direccionDisparo = direccionesPosibles.get(i);
+			//Aqui obtenemos los botones que estan junto a la celda seleccionada
+			boton = botones.get(cpu.getCeldaImpactada() + devolverValorDireccion(direccionDisparo));
+			if ((boton.getValorCelda() == Cte.HAY_BARCO) || (boton.getValorCelda() == Cte.INTACTO)) {
 
+				//Si no hay un disparo previo fallado nos vale la direccion de disparo seleccionada...
+				if(cpu.getDireccionUltDisparoFallado().equals("indefinido")) {
 
-		}else {
+					break;
+					//...si hay fallo en la direccion del ultimo disparo comprobamos...
+				}else {
+					//...si no coincide con la direccion de disparo fallada aceptamos la direccion, si no continua bucle hasta seleccionar otra opcion
+					if(!cpu.getDireccionUltDisparoFallado().equals(direccionDisparo)) {
 
+						break;
 
+					}
 
+				}
+
+			}
 
 		}
 
 
-
-		//si no hay nada en memoria cpu realizar una eleccion aleatoria sobre el arraylist de direcciones
-
-
-
-
-
-		//y si impacta por segunda vez seteamos posicion barco
-
-
-
 		return direccionDisparo;
+	}
+
+
+	//Segun la direccion equivaldra a restar o sumar al valor de celda actual
+	private int devolverValorDireccion(String direccionDisparo) {
+
+		int[] valorDireccion = new int [4];
+		int valor = 0;
+
+		valorDireccion[0] = -1;
+		valorDireccion[1] = +1;
+		valorDireccion[2] = -10;
+		valorDireccion[3] = +10;
+
+		if(direccionDisparo.equals("izquierda")) valor = valorDireccion[0];
+		if(direccionDisparo.equals("derecha")) valor = valorDireccion[1];
+		if(direccionDisparo.equals("arriba")) valor = valorDireccion[2];
+		if(direccionDisparo.equals("abajo")) valor = valorDireccion[3];
+
+
+		return valor;
 	}
 
 	//Para analizar la celda sobre la que disparar hay que analizar sus digitos:
@@ -403,10 +480,31 @@ public class MenuPrincipal extends JFrame {
 		}
 
 		//Direcciones posibles que puede tomar la cpu
-		direccionesPosibles.add("izquierda");
-		direccionesPosibles.add("derecha");
-		direccionesPosibles.add("arriba");
-		direccionesPosibles.add("abajo");
+
+		if(cpu.getPosicionBarco() == "indefinido") {
+
+			direccionesPosibles.add("izquierda");
+			direccionesPosibles.add("derecha");
+			direccionesPosibles.add("arriba");
+			direccionesPosibles.add("abajo");
+
+		}else {
+
+			if(cpu.getPosicionBarco() == "horizontal") {
+
+				direccionesPosibles.add("izquierda");
+				direccionesPosibles.add("derecha");
+
+			}
+
+			if(cpu.getPosicionBarco() == "vertical") {
+
+				direccionesPosibles.add("arriba");
+				direccionesPosibles.add("abajo");
+
+			}			
+
+		}		
 
 		//Eliminamos las posibles direcciones que no se pueden tomar dependiendo de su posicion
 
@@ -449,14 +547,18 @@ public class MenuPrincipal extends JFrame {
 		//Si en la celda ya se ha producido un disparo no permitimos disparo sobre ella de nuevo
 		if(boton.getValorCelda() == Cte.INTACTO) {
 
+			animacion();
 			boton.setValorCelda(Cte.AGUA);
 			disparoEfectuado = true;
+
 		}
 
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
+			animacion();
 			boton.setValorCelda(Cte.TOCADO);
 			disparoEfectuado = true;
+
 
 			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");
 
@@ -468,6 +570,12 @@ public class MenuPrincipal extends JFrame {
 		return disparoEfectuado;
 
 		//comprobarSiTodosHundidos(player.getFlota());		
+
+	}
+
+	private void animacion() {
+
+
 
 	}
 

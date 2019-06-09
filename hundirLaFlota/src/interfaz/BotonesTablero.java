@@ -37,6 +37,24 @@ public class BotonesTablero extends JButton {
 		this.posX = valor;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BotonesTablero other = (BotonesTablero) obj;
+		if (posX != other.posX)
+			return false;
+		if (posY != other.posY)
+			return false;
+		if (valorCelda != other.valorCelda)
+			return false;
+		return true;
+	}
+
 	public void setPosY(int valor) {
 		this.posY = valor;
 	}
