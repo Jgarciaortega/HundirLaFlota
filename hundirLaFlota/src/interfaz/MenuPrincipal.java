@@ -228,7 +228,6 @@ public class MenuPrincipal extends JFrame {
 
 	}
 
-
 	private void turnoPlayer(BotonesTablero botonMisAtaques) {
 
 		if(turnoPlayer1) {
@@ -281,6 +280,7 @@ public class MenuPrincipal extends JFrame {
 
 			//...si el ataque viene precedido de impacto
 		}else {
+
 
 			posicionAtacada = cpu.getCeldaImpactada();			
 			direccionAtaque = elegirDireccion(botones);

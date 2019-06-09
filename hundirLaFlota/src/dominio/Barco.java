@@ -54,10 +54,10 @@ public class Barco {
 		if (tamanyo == 4) {
 						
 			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 7; this.posiciones[0][1] = 3;					
-			this.posiciones[1][0] = 7; this.posiciones[1][1] = 4;
-			this.posiciones[2][0] = 7; this.posiciones[2][1] = 5;
-			this.posiciones[3][0] = 7; this.posiciones[3][1] = 6;
+			this.posiciones[0][0] = 3; this.posiciones[0][1] = 7;					
+			this.posiciones[1][0] = 4; this.posiciones[1][1] = 7;
+			this.posiciones[2][0] = 5; this.posiciones[2][1] = 7;
+			this.posiciones[3][0] = 6; this.posiciones[3][1] = 7;
 			
 			this.valores[0] = Cte.HAY_BARCO;
 			this.valores[1] = Cte.HAY_BARCO;
