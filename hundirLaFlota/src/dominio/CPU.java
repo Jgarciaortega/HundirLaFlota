@@ -81,22 +81,22 @@ public class CPU extends Jugador {
 
 	//Metodos
 
-
 	@Override
 	public void generarBarcos() {
-		
-				
-		Barco b = new Barco(2);		
+						
+		Barco b = new Barco(2,"cpu");		
 		this.flota.insertarBarco(b);
 
-		
-		
-		b = new Barco(4);		
+		b = new Barco(3,"cpu");
+		this.flota.insertarBarco(b);
+
+		b = new Barco(4,"cpu");
+		this.flota.insertarBarco(b);
+
+		b = new Barco(5,"cpu");
 		this.flota.insertarBarco(b);
 
 	}
-	
-	
 	
 	public boolean comprobarSiCeldasEstanDisponibles(Barco barco) {
 		

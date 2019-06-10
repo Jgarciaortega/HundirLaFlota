@@ -307,7 +307,7 @@ public class MenuPrincipal extends JFrame {
 		//mientras cpu y player tengan barcos la partida esta en marcha
 
 		if(!turnoPlayer1) {
-			
+
 			ataqueCPU(player.getBotonesOponenente(), null);
 			turnoPlayer1 = true;
 
@@ -349,7 +349,6 @@ public class MenuPrincipal extends JFrame {
 			posicionAtacada = cpu.getCeldaImpactada();			
 			direccionAtaque = elegirDireccion(botones);
 
-
 			if(direccionAtaque.equals("izquierda")) {
 
 				posicionAtacada = posicionAtacada -1;
@@ -368,8 +367,6 @@ public class MenuPrincipal extends JFrame {
 			}
 		}
 
-
-
 		//Obtenemos boton sobre el que atacar
 		boton = botones.get(posicionAtacada);
 
@@ -381,16 +378,20 @@ public class MenuPrincipal extends JFrame {
 
 		//Si hunde barco reiniciamos memoria y disparamos de nuevo
 		if(boton.getValorCelda() == Cte.HUNDIDO) {
-			
+
 			reiniciarMemoriaCPU();
 			ataqueCPU(player.getBotonesOponenente(), null);
-			
-			
+			if(comprobarSiTodosHundidos(player.getFlota())) {
+
+				System.out.println("FIN DE LA PARTIDA");
+
+			}
+
 		}
-		
+
 		//...sigue tirando hasta que falle 
 		if(impacto) {
-			
+
 			//Si entra aqui es porque ha habido mas de un impacto.Ya podemos averiguar la posicion en la que esta(vertical-horizontal)
 			if(cpu.getCeldaImpactada() != -1) {
 
@@ -401,19 +402,7 @@ public class MenuPrincipal extends JFrame {
 			//Guardamos en registro cpu la celda que acabamos de alcanzar
 			cpu.setCeldaImpactada(posicionAtacada);
 
-			//Comprobar si hundido
-			if(comprobarSiHundido(boton)) {
-
-				reiniciarMemoriaCPU();
-				//Comprobamos si aun quedan barcos en la flota del player
-				if(comprobarSiTodosHundidos(player.getFlota())) {
-
-					//TODO programar fin de juego
-					System.out.println("FIN DE JUEGO");
-				}
-
-			}
-
+			
 			//CPU vuelve a atacar
 			ataqueCPU(botones,boton);
 
@@ -427,8 +416,8 @@ public class MenuPrincipal extends JFrame {
 					cpu.setDireccionUltDisparoFallado(direccionAtaque);
 
 				}
-				
-				
+
+
 			}
 		}
 	}
@@ -633,7 +622,7 @@ public class MenuPrincipal extends JFrame {
 		if(coordenadaY == '9') direccionesPosibles.remove(1);
 
 		//Si X vale 9 anulamos direccion abajo
-		if(coordenadaX == '0') direccionesPosibles.remove(4);
+		if(coordenadaX == '0') direccionesPosibles.remove(3);
 
 
 		return direccionesPosibles;
@@ -701,7 +690,7 @@ public class MenuPrincipal extends JFrame {
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
 			boton.setValorCelda(Cte.TOCADO);
-			barco = flota.devuelveBarco(boton.getPosX(), boton.getPosY(),false);
+			barco = flota.devuelveBarco(boton.getPosX(), boton.getPosY(),true);
 			comprobarSiHundido(boton);
 			disparoEfectuado = true;
 
@@ -712,15 +701,12 @@ public class MenuPrincipal extends JFrame {
 
 				//Despues de hundir todos los botones de ese barco deben cambiar su imagen
 				modificarBotonesAlrededor(botones,boton);
-				System.out.println("SI");
 
 			}
 
 		}		
 
 		boton.asignarColorBoton();
-
-
 
 		return disparoEfectuado;
 
@@ -745,7 +731,7 @@ public class MenuPrincipal extends JFrame {
 		while(!arriba) arriba = mirarA("arriba",botones,boton);	
 		while(!abajo) abajo = mirarA("abajo",botones,boton);
 	}
-	
+
 
 	//Observa el estado de los botones de alrededor para saber si el barco esta hundido
 	private boolean mirarA(String direccion, ArrayList<BotonesTablero> botones, BotonesTablero boton) {
@@ -869,7 +855,6 @@ public class MenuPrincipal extends JFrame {
 
 		DialogoAyuda informacion = new DialogoAyuda(referencia);
 
-		informacion.setVisible(true);
 
 	}
 

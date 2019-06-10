@@ -20,7 +20,7 @@ public class Barco {
 	
 	
 	//Constructor	
-	public Barco(int tamanyo) {
+	public Barco(int tamanyo, String tipoJugador) {
 	
 		this.tamanyo = tamanyo;
 		this.hundido = false;
@@ -29,75 +29,139 @@ public class Barco {
 		
 		this.posiciones = new int[tamanyo][2];
 		
-		if (tamanyo == 2) {
-			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 0; this.posiciones[0][1] = 0;					
-			this.posiciones[1][0] = 0; this.posiciones[1][1] = 1;
+		if(tipoJugador.equals("player")) {
 			
-			this.valores[0] = Cte.HAY_BARCO;
-			this.valores[1] = Cte.HAY_BARCO;
+			if (tamanyo == 2) {
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 1; this.posiciones[0][1] = 0;					
+				this.posiciones[1][0] = 1; this.posiciones[1][1] = 1;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				
+			}
+					
+			if (tamanyo == 3) {
+				
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 3; this.posiciones[0][1] = 3;					
+				this.posiciones[1][0] = 3; this.posiciones[1][1] = 4;
+				this.posiciones[2][0] = 3; this.posiciones[2][1] = 5;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;					
+			}
 			
+			if (tamanyo == 4) {
+							
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 5; this.posiciones[0][1] = 3;					
+				this.posiciones[1][0] = 5; this.posiciones[1][1] = 4;
+				this.posiciones[2][0] = 5; this.posiciones[2][1] = 5;			
+				this.posiciones[3][0] = 5; this.posiciones[3][1] = 6;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;
+				this.valores[3] = Cte.HAY_BARCO;
+				
+				
+			}
+			
+			
+			if (tamanyo == 5) {
+				
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 1; this.posiciones[0][1] = 8;					
+				this.posiciones[1][0] = 2; this.posiciones[1][1] = 8;
+				this.posiciones[2][0] = 3; this.posiciones[2][1] = 8;			
+				this.posiciones[3][0] = 4; this.posiciones[3][1] = 8;
+				this.posiciones[4][0] = 5; this.posiciones[4][1] = 8;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;
+				this.valores[3] = Cte.HAY_BARCO;
+				this.valores[4] = Cte.HAY_BARCO;
+				
+			}									
 		}
 		
-		if (tamanyo == 2) {
-			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 0; this.posiciones[0][1] = 0;					
-			this.posiciones[1][0] = 0; this.posiciones[1][1] = 1;
-			
-			this.valores[0] = Cte.HAY_BARCO;
-			this.valores[1] = Cte.HAY_BARCO;
-			
-		}
 		
-		
-		
-		if (tamanyo == 3) {
-			
-			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 3; this.posiciones[0][1] = 3;					
-			this.posiciones[1][0] = 3; this.posiciones[1][1] = 4;
-			this.posiciones[2][0] = 3; this.posiciones[2][1] = 5;
-			
-			this.valores[0] = Cte.HAY_BARCO;
-			this.valores[1] = Cte.HAY_BARCO;
-			this.valores[2] = Cte.HAY_BARCO;					
-		}
-		
-		if (tamanyo == 4) {
+		if(tipoJugador.equals("cpu")) {
 						
-			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 3; this.posiciones[0][1] = 7;					
-			this.posiciones[1][0] = 4; this.posiciones[1][1] = 7;
-			this.posiciones[2][0] = 5; this.posiciones[2][1] = 7;
-			this.posiciones[3][0] = 6; this.posiciones[3][1] = 7;
+			if (tamanyo == 2) {
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 8; this.posiciones[0][1] = 0;					
+				this.posiciones[1][0] = 8; this.posiciones[1][1] = 1;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				
+			}
+					
+			if (tamanyo == 3) {
+				
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 5; this.posiciones[0][1] = 2;					
+				this.posiciones[1][0] = 6; this.posiciones[1][1] = 2;
+				this.posiciones[2][0] = 7; this.posiciones[2][1] = 2;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;					
+			}
 			
-			this.valores[0] = Cte.HAY_BARCO;
-			this.valores[1] = Cte.HAY_BARCO;
-			this.valores[2] = Cte.HAY_BARCO;
-			this.valores[3] = Cte.HAY_BARCO;
+			if (tamanyo == 4) {
+							
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 1; this.posiciones[0][1] = 6;					
+				this.posiciones[1][0] = 1; this.posiciones[1][1] = 7;
+				this.posiciones[2][0] = 1; this.posiciones[2][1] = 8;			
+				this.posiciones[3][0] = 1; this.posiciones[3][1] = 9;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;
+				this.valores[3] = Cte.HAY_BARCO;
+				
+				
+			}
+						
+			if (tamanyo == 5) {
+				
+				//POSICION X				POSICION Y
+				this.posiciones[0][0] = 9; this.posiciones[0][1] = 2;					
+				this.posiciones[1][0] = 9; this.posiciones[1][1] = 3;
+				this.posiciones[2][0] = 9; this.posiciones[2][1] = 4;			
+				this.posiciones[3][0] = 9; this.posiciones[3][1] = 5;
+				this.posiciones[4][0] = 9; this.posiciones[4][1] = 6;
+				
+				this.valores[0] = Cte.HAY_BARCO;
+				this.valores[1] = Cte.HAY_BARCO;
+				this.valores[2] = Cte.HAY_BARCO;
+				this.valores[3] = Cte.HAY_BARCO;
+				this.valores[4] = Cte.HAY_BARCO;
+				
+			}								
 			
 			
-		}		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+		}
 		
+	
 		
-		
-	/*	if (tamanyo == 5) {
-			
-			//POSICION X				POSICION Y
-			this.posiciones[0][0] = 3; this.posiciones[0][1] = 9;					
-			this.posiciones[1][0] = 4; this.posiciones[1][1] = 9;
-			this.posiciones[2][0] = 5; this.posiciones[2][1] = 9;
-			this.posiciones[3][0] = 6; this.posiciones[3][1] = 9;
-			this.posiciones[4][0] = 7; this.posiciones[3][1] = 9;
-			
-			this.valores[0] = Cte.HAY_BARCO;
-			this.valores[1] = Cte.HAY_BARCO;
-			this.valores[2] = Cte.HAY_BARCO;
-			this.valores[3] = Cte.HAY_BARCO;
-			this.valores[4] = Cte.HAY_BARCO;
-			
-			
-		}		*/
 				
 	}
 	
