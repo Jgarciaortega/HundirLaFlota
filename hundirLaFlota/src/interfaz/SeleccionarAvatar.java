@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -21,14 +22,31 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
-
+import javax.swing.border.LineBorder;
+/**
+ * <h1> Clase SeleccionarAvatar </h1>
+ * 
+ * Esta clase es el frame inicial. En este frame se selecciona el nombre del jugador y su foto de Avatar.
+ * 
+ * Los atributos de esta son:
+ * <ul>
+ * <li>btnAvatar1</li>
+ * <li>btnAvatar2</li>
+ * <li>btnAvatar3</li>
+ * <li>btnAvatar4</li>
+ * <li>btnIniciarPartida</li>
+ * <li>imagenAvatar</li>
+ * <li>textNombre</li>
+ * </ul>
+ *@author Javier García y Marcel Ramirez
+ */
 public class SeleccionarAvatar extends JFrame {
 
 	private JPanel contentPane;
-	private JButton btnAvatar1;
-	private JButton btnAvatar2;
-	private JButton btnAvatar3;
-	private JButton btnAvatar4;
+	private BotonSeleccion btnAvatar1;
+	private BotonSeleccion btnAvatar2;
+	private BotonSeleccion btnAvatar3;
+	private BotonSeleccion btnAvatar4;
 	
 	private MenuPrincipal juego;
 	private JPanel panel;
@@ -66,7 +84,7 @@ public class SeleccionarAvatar extends JFrame {
 	public SeleccionarAvatar() {
 		setTitle("Hundir la flota");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 729, 480);
+		setBounds(100, 100, 749, 480);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -82,7 +100,7 @@ public class SeleccionarAvatar extends JFrame {
 		});
 		
 		panel = new JPanel();
-		panel.setBounds(0, 212, 713, 229);
+		panel.setBounds(0, 212, 733, 229);
 		panel.setOpaque(false);
 		contentPane.add(panel);
 		panel.setLayout(new BorderLayout(0, 0));
@@ -91,9 +109,9 @@ public class SeleccionarAvatar extends JFrame {
 		panel_1.setOpaque(false);
 		panel.add(panel_1, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
-		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
@@ -104,76 +122,79 @@ public class SeleccionarAvatar extends JFrame {
 		gbc_label_3.gridx = 0;
 		gbc_label_3.gridy = 1;
 		panel_1.add(label_3, gbc_label_3);
-		 
-		 label_5 = new JLabel("");
-		 label_5.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
-		 GridBagConstraints gbc_label_5 = new GridBagConstraints();
-		 gbc_label_5.insets = new Insets(0, 0, 5, 5);
-		 gbc_label_5.gridx = 1;
-		 gbc_label_5.gridy = 1;
-		 panel_1.add(label_5, gbc_label_5);
-		 
-		 label = new JLabel("");
-		 label.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
-		 GridBagConstraints gbc_label = new GridBagConstraints();
-		 gbc_label.insets = new Insets(0, 0, 5, 5);
-		 gbc_label.gridx = 2;
-		 gbc_label.gridy = 1;
-		 panel_1.add(label, gbc_label);
-		 
-		 label_1 = new JLabel("");
-		 label_1.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
-		 GridBagConstraints gbc_label_1 = new GridBagConstraints();
-		 gbc_label_1.insets = new Insets(0, 0, 5, 5);
-		 gbc_label_1.gridx = 4;
-		 gbc_label_1.gridy = 1;
-		 panel_1.add(label_1, gbc_label_1);
+		
+		label_5 = new JLabel("");
+		label_5.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
+		GridBagConstraints gbc_label_5 = new GridBagConstraints();
+		gbc_label_5.insets = new Insets(0, 0, 5, 5);
+		gbc_label_5.gridx = 2;
+		gbc_label_5.gridy = 1;
+		panel_1.add(label_5, gbc_label_5);
+		
+		label = new JLabel("");
+		label.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 5);
+		gbc_label.gridx = 4;
+		gbc_label.gridy = 1;
+		panel_1.add(label, gbc_label);
+		
+		label_1 = new JLabel("");
+		label_1.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
+		GridBagConstraints gbc_label_1 = new GridBagConstraints();
+		gbc_label_1.insets = new Insets(0, 0, 5, 5);
+		gbc_label_1.gridx = 6;
+		gbc_label_1.gridy = 1;
+		panel_1.add(label_1, gbc_label_1);
 		
 		label_2 = new JLabel("");
 		label_2.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
 		GridBagConstraints gbc_label_2 = new GridBagConstraints();
-		gbc_label_2.insets = new Insets(0, 0, 5, 5);
-		gbc_label_2.gridx = 6;
+		gbc_label_2.insets = new Insets(0, 0, 5, 0);
+		gbc_label_2.gridx = 7;
 		gbc_label_2.gridy = 1;
 		panel_1.add(label_2, gbc_label_2);
-		
-		btnAvatar1 = new JButton("");
-		btnAvatar1.setOpaque(false);
-		btnAvatar1.setContentAreaFilled(false);
-		btnAvatar1.setBorderPainted(false);
-		btnAvatar1.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconodrake.png")));
-		GridBagConstraints gbc_btnAvatar1 = new GridBagConstraints();
-		gbc_btnAvatar1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAvatar1.gridx = 1;
-		gbc_btnAvatar1.gridy = 2;
-		panel_1.add(btnAvatar1, gbc_btnAvatar1);
-		btnAvatar1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pasarImagen(1);
-			}
+		 
+		 btnAvatar1 = new BotonSeleccion();
+		 btnAvatar1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		 btnAvatar1.setOpaque(false);
+		 btnAvatar1.setContentAreaFilled(false);
+		 btnAvatar1.setBorderPainted(false);
+		 btnAvatar1.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconodrake.png")));
+		 GridBagConstraints gbc_btnAvatar1 = new GridBagConstraints();
+		 gbc_btnAvatar1.insets = new Insets(0, 0, 5, 5);
+		 gbc_btnAvatar1.gridx = 1;
+		 gbc_btnAvatar1.gridy = 2;
+		 panel_1.add(btnAvatar1, gbc_btnAvatar1);
+		 btnAvatar1.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		pasarImagen(1);
+		 	}
 
-			
-		});
-		btnAvatar1.setVisible(false);
+		 	
+		 });
+		 btnAvatar1.setVisible(false);
+		 
+		 btnAvatar2 = new BotonSeleccion();
+		 btnAvatar2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		 btnAvatar2.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconoColin.png")));
+		 btnAvatar2.setOpaque(false);
+		 btnAvatar2.setContentAreaFilled(false);
+		 btnAvatar2.setBorderPainted(false);
+		 GridBagConstraints gbc_btnAvatar2 = new GridBagConstraints();
+		 gbc_btnAvatar2.insets = new Insets(0, 0, 5, 5);
+		 gbc_btnAvatar2.gridx = 3;
+		 gbc_btnAvatar2.gridy = 2;
+		 panel_1.add(btnAvatar2, gbc_btnAvatar2);
+		 btnAvatar2.addActionListener(new ActionListener() {
+		 	public void actionPerformed(ActionEvent e) {
+		 		pasarImagen(2);
+		 	}
+		 });
+		 btnAvatar2.setVisible(false);
 		
-		btnAvatar2 = new JButton("");
-		btnAvatar2.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconoColin.png")));
-		btnAvatar2.setOpaque(false);
-		btnAvatar2.setContentAreaFilled(false);
-		btnAvatar2.setBorderPainted(false);
-		GridBagConstraints gbc_btnAvatar2 = new GridBagConstraints();
-		gbc_btnAvatar2.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAvatar2.gridx = 3;
-		gbc_btnAvatar2.gridy = 2;
-		panel_1.add(btnAvatar2, gbc_btnAvatar2);
-		btnAvatar2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pasarImagen(2);
-			}
-		});
-		btnAvatar2.setVisible(false);
-		
-		 btnAvatar3 = new JButton("");
+		 btnAvatar3 = new BotonSeleccion();
+		 btnAvatar3.setBorder(new LineBorder(new Color(0, 0, 0)));
 		 btnAvatar3.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconoSasha.png")));
 		 btnAvatar3.setOpaque(false);
 		 btnAvatar3.setContentAreaFilled(false);
@@ -190,13 +211,14 @@ public class SeleccionarAvatar extends JFrame {
 		 });
 		 btnAvatar3.setVisible(false);
 		
-		btnAvatar4 = new JButton("");
+		btnAvatar4 = new BotonSeleccion();
+		btnAvatar4.setBorderPainted(false);
+		btnAvatar4.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnAvatar4.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/iconoEagle.png")));
 		btnAvatar4.setOpaque(false);
 		btnAvatar4.setContentAreaFilled(false);
-		btnAvatar4.setBorderPainted(false);
 		GridBagConstraints gbc_btnAvatar4 = new GridBagConstraints();
-		gbc_btnAvatar4.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAvatar4.insets = new Insets(0, 0, 5, 0);
 		gbc_btnAvatar4.gridx = 7;
 		gbc_btnAvatar4.gridy = 2;
 		panel_1.add(btnAvatar4, gbc_btnAvatar4);
@@ -207,7 +229,7 @@ public class SeleccionarAvatar extends JFrame {
 		});
 		btnAvatar4.setVisible(false);
 		
-		label_4 = new JLabel("");
+		label_4 = new JLabel();
 		label_4.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/transparente1.png")));
 		GridBagConstraints gbc_label_4 = new GridBagConstraints();
 		gbc_label_4.insets = new Insets(0, 0, 0, 5);
@@ -258,33 +280,38 @@ public class SeleccionarAvatar extends JFrame {
 		
 		textNombre = new JTextField();
 		textNombre.setHorizontalAlignment(SwingConstants.CENTER);
-		textNombre.setBounds(263, 110, 172, 20);
+		textNombre.setBounds(288, 110, 172, 20);
 		contentPane.add(textNombre);
 		textNombre.setColumns(10);
 		textNombre.getText();
 		
 		btnSeleccioneUnAvatar.setForeground(new Color(255, 0, 0));
 		btnSeleccioneUnAvatar.setFont(new Font("Stencil", Font.PLAIN, 16));
-		btnSeleccioneUnAvatar.setBounds(230, 178, 243, 23);
+		btnSeleccioneUnAvatar.setBounds(249, 177, 243, 23);
 		contentPane.add(btnSeleccioneUnAvatar);
 		
 		JLabel lblIntroduzcaUnNombre = new JLabel("Introduzca un nombre");
 		lblIntroduzcaUnNombre.setFont(new Font("Stencil", Font.PLAIN, 14));
-		lblIntroduzcaUnNombre.setBounds(80, 106, 173, 29);
+		lblIntroduzcaUnNombre.setBounds(91, 106, 173, 29);
 		contentPane.add(lblIntroduzcaUnNombre);
 		
 		JLabel logo = new JLabel("");
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		logo.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/logo.png")));
-		logo.setBounds(103, 0, 483, 61);
+		logo.setBounds(130, 0, 483, 61);
 		contentPane.add(logo);
 		
 		JLabel fondo = new JLabel("");
 		fondo.setIcon(new ImageIcon(SeleccionarAvatar.class.getResource("/interfaz/img/fondo seleccion.png")));
-		fondo.setBounds(0, 0, 729, 449);
+		fondo.setBounds(0, 0, 755, 449);
 		contentPane.add(fondo);
 	}
 	
+	/**
+	 * <h2>aparecerAvatares</h2>
+	 * Un metedo creado para cuando se pulse el boton de seleccionar avatar aparezcan los avateres que puedes seleccionar.
+	 * 
+	 */
 	//metodo para hacre que aparezcan los botones
 	private void aparecerAvatares() {
 		
@@ -295,7 +322,13 @@ public class SeleccionarAvatar extends JFrame {
 		
 	}
 	
-	
+	/**
+	 * <h2>pasarImagen</h2>
+	 * 
+	 * Metodo que sirve para guardar la imagen y mostrarla en el siguiente Jframe.
+	 * 
+	 * @param numeroAvatar: es un entero que llevara un numero (del 1 al 4), dependiendo de que avatar hayas elegido 
+	 */
 	
 	//metodo para hacer que los botones pasen su imagen al otro frame
 	private void pasarImagen(int numeroAvatar) {
@@ -323,14 +356,24 @@ public class SeleccionarAvatar extends JFrame {
 		this.btnIniciarPartida.setEnabled(true);
 		
 	}
-	
+	/**
+	 * <h2>iniciarPartida</h2>
+	 * 
+	 * Metodo que sirve para iniciar la partida una vez hayas seleccionado tu nombre y tu avatar.
+	 * @param imagenRuta: String que lleva la ruta de la imagen seleccionada
+	 */
 	//inicia la partida
 	private void iniciarPartida(String imagenRuta) {
-		
-		this.juego = new MenuPrincipal(imagenRuta, this.textNombre.getText());
-		this.juego.setVisible(true);
-		this.juego.setExtendedState(MAXIMIZED_BOTH);
-		dispose();
+
+		if(this.textNombre.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Por favor, Introduzca un nombre para su Avatar", "Falta el nombre", JOptionPane.INFORMATION_MESSAGE);
+
+		}else {
+			this.juego = new MenuPrincipal(imagenRuta, this.textNombre.getText());
+			this.juego.setVisible(true);
+			dispose();
+
+		}
 		
 		
 	}
