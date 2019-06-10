@@ -14,7 +14,7 @@ public class Jugador1 extends Jugador{
 
 		this.nombreJugador = nombreJugador;
 		this.imagenJugador = imagen;
-		this.botonesPlayer = new ArrayList<BotonesTablero>();
+		
 
 	}
 
@@ -26,39 +26,27 @@ public class Jugador1 extends Jugador{
 		Barco b = new Barco(3);		
 		this.flota.insertarBarco(b);
 		
-		Barco b2 = new Barco(4);
-		this.flota.insertarBarco(b2);
+		 b = new Barco(4);
+		this.flota.insertarBarco(b);
 		
-		Barco b1 = new Barco(2);
-		this.flota.insertarBarco(b2);
+		 b = new Barco(5);
+		this.flota.insertarBarco(b);
 
 
 	}
 
 	//Getters And Setters
 
-	public ArrayList<BotonesTablero> getBotonesPlayer() {
-		
-		return botonesPlayer;
-	}
-
+	
 	//METODOS
 
-	public void anyadirBoton (BotonesTablero botonPlayer) {
 
-		botonesPlayer.add(botonPlayer);
-
-	}
 
 	public void setBotonesPlayer(ArrayList<BotonesTablero> botonesPlayer) {
 		
 		this.botonesPlayer = botonesPlayer;
 	}
 
-	public BotonesTablero devuelveBoton(int celdaDisparada) {
-
-		return botonesPlayer.get(celdaDisparada);
-	}
-
+	
 
 }

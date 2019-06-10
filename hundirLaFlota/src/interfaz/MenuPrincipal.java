@@ -72,7 +72,7 @@ public class MenuPrincipal extends JFrame {
 		mntmNuevoJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				reiniciarPartida();
-				
+
 			}
 		});
 		mnJuego.add(mntmNuevoJuego);
@@ -95,7 +95,7 @@ public class MenuPrincipal extends JFrame {
 			}
 		});
 		mnReglas.add(mntmReglasDelJuego);
-		
+
 		JMenuItem mntmAcercaDe = new JMenuItem("Acerca de");
 		mntmAcercaDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -211,6 +211,8 @@ public class MenuPrincipal extends JFrame {
 		//BOTONES TABLERO
 		for(int i = 0; i < 2; i++) {
 
+			int cont = 0;
+
 			for(int x = 0; x < Cte.NUM_FILAS; x++) {
 				for(int y = 0; y < Cte.NUM_COLUMNAS; y++) {
 
@@ -220,9 +222,10 @@ public class MenuPrincipal extends JFrame {
 						BotonesTablero botonMisBarcos = new BotonesTablero();
 						botonMisBarcos.setPosX(x);
 						botonMisBarcos.setPosY(y);
+						botonMisBarcos.setId(cont);
 
 						//En el momento de la creacion de los botones ya le asignamos las posiciones de los barcos del PLAYER 1
-						botonMisBarcos.setValorCelda(  this.player.tablero[x][y]   );
+						botonMisBarcos.setValorCelda(this.player.tablero[x][y]);
 
 						//Player contendra una lista de botones los cuales seran modificados en los disparos que sufra de la CPU
 						player.anyadirBoton(botonMisBarcos);
@@ -236,13 +239,19 @@ public class MenuPrincipal extends JFrame {
 						BotonesTablero botonMisAtaques = new BotonesTablero();
 						botonMisAtaques.setPosX(x);
 						botonMisAtaques.setPosY(y);
+						botonMisAtaques.setId(cont);
+
 						botonMisAtaques.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent arg0) {
 
 								turnoPlayer(botonMisAtaques);
 							}
 
-						});						
+						});		
+
+
+						//CPU contendra una lista de botones los cuales seran modificados en los disparos que sufra de la CPU
+						cpu.anyadirBoton(botonMisAtaques);
 
 						//En el momento de la creacion de los botones ya le asignamos las posiciones de los barcos de la CPU
 						botonMisAtaques.setValorCelda(this.cpu.tablero[x][y]);
@@ -250,6 +259,8 @@ public class MenuPrincipal extends JFrame {
 						//Anyadir boton al tablero
 						panelTablero2.add(botonMisAtaques);
 					}
+
+					cont++;
 				}
 			}
 		}
@@ -257,10 +268,10 @@ public class MenuPrincipal extends JFrame {
 		iniciarPartida();
 
 	}
-/**
- * <h2>iniciarPartida</h2>
- * Metodo que inicia la partida
- */
+	/**
+	 * <h2>iniciarPartida</h2>
+	 * Metodo que inicia la partida
+	 */
 	public void iniciarPartida () {
 
 		cpu.iniciarPartida();
@@ -269,11 +280,11 @@ public class MenuPrincipal extends JFrame {
 
 	}
 
-/**
- * <h2>turnoPlayer</h2>
- * Metodo que le da el turno al Jugador_1. Durante este turno puede realizar acciones
- * @param botonMisAtaques: es el boton que ha atacado el jugador 1 
- */
+	/**
+	 * <h2>turnoPlayer</h2>
+	 * Metodo que le da el turno al Jugador_1. Durante este turno puede realizar acciones
+	 * @param botonMisAtaques: es el boton que ha atacado el jugador 1 
+	 */
 	private void turnoPlayer(BotonesTablero botonMisAtaques) {
 
 		if(turnoPlayer1) {
@@ -285,31 +296,29 @@ public class MenuPrincipal extends JFrame {
 			}
 		}
 	}
-/**
- * <h2>turnoCPU</h2>
- * Metodo que le da el turno a la CPU. Durante este turno la CPU realizara una accion
- * 
- * 
- */
+	/**
+	 * <h2>turnoCPU</h2>
+	 * Metodo que le da el turno a la CPU. Durante este turno la CPU realizara una accion
+	 * 
+	 * 
+	 */
 	private void turnoCPU() {
 
-		boolean todosHundidosCPU = false;
-		boolean impacto = false;
 		//mientras cpu y player tengan barcos la partida esta en marcha
 
 		if(!turnoPlayer1) {
-
-			ataqueCPU(player.getBotonesPlayer(), null);
+			
+			ataqueCPU(player.getBotonesOponenente(), null);
 			turnoPlayer1 = true;
 
 		}
 	}
-/**
- * <h2>ataqueCPU</h2>
- * Es el algoritmo principal que sigue la cpu para elegir la mejor opción a la hora de atacar
- * @param botones: un arraylist de botones
- * @param boton: un boton para aplicar los cambios en ese boton
- */
+	/**
+	 * <h2>ataqueCPU</h2>
+	 * Es el algoritmo principal que sigue la cpu para elegir la mejor opción a la hora de atacar
+	 * @param botones: un arraylist de botones
+	 * @param boton: un boton para aplicar los cambios en ese boton
+	 */
 	private void ataqueCPU(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
 
 		//Celda que va a recibir un ataque 
@@ -339,7 +348,7 @@ public class MenuPrincipal extends JFrame {
 
 			posicionAtacada = cpu.getCeldaImpactada();			
 			direccionAtaque = elegirDireccion(botones);
-			System.out.println(direccionAtaque);
+
 
 			if(direccionAtaque.equals("izquierda")) {
 
@@ -368,11 +377,20 @@ public class MenuPrincipal extends JFrame {
 		disparar(boton);
 
 		//Si se produce impacto...
-		boolean impacto = (boton.getValorCelda() == Cte.TOCADO) ? true : false;
+		boolean impacto = (boton.getValorCelda() == Cte.TOCADO)  ? true : false;
 
+		//Si hunde barco reiniciamos memoria y disparamos de nuevo
+		if(boton.getValorCelda() == Cte.HUNDIDO) {
+			
+			reiniciarMemoriaCPU();
+			ataqueCPU(player.getBotonesOponenente(), null);
+			
+			
+		}
+		
 		//...sigue tirando hasta que falle 
 		if(impacto) {
-
+			
 			//Si entra aqui es porque ha habido mas de un impacto.Ya podemos averiguar la posicion en la que esta(vertical-horizontal)
 			if(cpu.getCeldaImpactada() != -1) {
 
@@ -409,18 +427,20 @@ public class MenuPrincipal extends JFrame {
 					cpu.setDireccionUltDisparoFallado(direccionAtaque);
 
 				}
+				
+				
 			}
 		}
 	}
-/**
- * <h2>avariguarPosicionBarco</h2>
- * Un metodo para que la cpu sepa en que posicion se encuentra los barcos del jugador
- * @param boton: un boton qque le indica la posicion a la cpu
- * @return
- * <ul>
- * <li>devuelve la poscion en la que se encuentra el barco</li>
- * </ul>
- */
+	/**
+	 * <h2>avariguarPosicionBarco</h2>
+	 * Un metodo para que la cpu sepa en que posicion se encuentra los barcos del jugador
+	 * @param boton: un boton qque le indica la posicion a la cpu
+	 * @return
+	 * <ul>
+	 * <li>devuelve la poscion en la que se encuentra el barco</li>
+	 * </ul>
+	 */
 	private String averiguarPosicionBarco(BotonesTablero boton) {
 
 		Flota flota = player.getFlota();
@@ -439,11 +459,11 @@ public class MenuPrincipal extends JFrame {
 
 		return posicion;
 	}
-/**
- * <h2>reiniciarMemoriaCPU</h2>
- * Metodo que reinicia la memoria de la CPU
- * 
- */
+	/**
+	 * <h2>reiniciarMemoriaCPU</h2>
+	 * Metodo que reinicia la memoria de la CPU
+	 * 
+	 */
 	private void reiniciarMemoriaCPU() {
 
 		cpu.setCeldaImpactada(-1);
@@ -451,35 +471,33 @@ public class MenuPrincipal extends JFrame {
 		cpu.setDireccionUltDisparoFallado("indefinido");
 
 	}
-/**
- * <h2>elegirDireccion</h2>
- * Metodo que utiliza la cpu para elegir la dirreccion del siguiente disparo
- * @param botones: un ArrayList de botones
- * @return
- * <ul>
- * <li>devulve la direccion donde va disparar la CPU </li>
- * </ul>
- */
+	/**
+	 * <h2>elegirDireccion</h2>
+	 * Metodo que utiliza la cpu para elegir la dirreccion del siguiente disparo
+	 * @param botones: un ArrayList de botones
+	 * @return
+	 * <ul>
+	 * <li>devulve la direccion donde va disparar la CPU </li>
+	 * </ul>
+	 */
 	private String elegirDireccion(ArrayList<BotonesTablero> botones) {
 
 		String direccionDisparo = "";
-		String posicionBarco = cpu.getPosicionBarco();
-		String direccionUltDisparoFallado = cpu.getDireccionUltDisparoFallado();		
 
 		direccionDisparo = obtenerDireccion(botones);
 
 		return direccionDisparo;
 	}
 
-/**
- * <h2>obtenerDireccion</h2>
- * Metodo que obtiene la direccioon en la que va dispara la CPU
- * @param botones: un arrayList de botones
- * @return
- *<ul>
- *<li>la direccion de donde va a disparar<li>
- *</ul>
- */
+	/**
+	 * <h2>obtenerDireccion</h2>
+	 * Metodo que obtiene la direccioon en la que va dispara la CPU
+	 * @param botones: un arrayList de botones
+	 * @return
+	 *<ul>
+	 *<li>la direccion de donde va a disparar<li>
+	 *</ul>
+	 */
 	private String obtenerDireccion(ArrayList<BotonesTablero> botones) {
 
 		int celdaDisparada = cpu.getCeldaImpactada();
@@ -520,16 +538,16 @@ public class MenuPrincipal extends JFrame {
 		return direccionDisparo;
 	}
 
-/**
- * <h2>devolverValorDIreccion</h2>
- * Metodo que devuelve el valor de la direccion de donde ha disparado la cPU
- * 
- * @param direccionDisparo: un String que tiene la direccion del disparo
- * @return
- * <ul>
- * <li>el valor de la direccion</li>
- * </ul>
- */
+	/**
+	 * <h2>devolverValorDIreccion</h2>
+	 * Metodo que devuelve el valor de la direccion de donde ha disparado la cPU
+	 * 
+	 * @param direccionDisparo: un String que tiene la direccion del disparo
+	 * @return
+	 * <ul>
+	 * <li>el valor de la direccion</li>
+	 * </ul>
+	 */
 	//Segun la direccion equivaldra a restar o sumar al valor de celda actual
 	private int devolverValorDireccion(String direccionDisparo) {
 
@@ -549,15 +567,15 @@ public class MenuPrincipal extends JFrame {
 
 		return valor;
 	}
-/**
- * <h2>comprobarAlrededores</h2>
- * Metodo que comprueba los alrededores de donde ha disparado la CPU
- * @param celdaDisparada: un int que tiene el numero de la celda disparada
- * @return
- * <ul>
- * <li>devuelve las direcciones posibles en las que se encuetra la cpu</li>
- * </ul>
- */
+	/**
+	 * <h2>comprobarAlrededores</h2>
+	 * Metodo que comprueba los alrededores de donde ha disparado la CPU
+	 * @param celdaDisparada: un int que tiene el numero de la celda disparada
+	 * @return
+	 * <ul>
+	 * <li>devuelve las direcciones posibles en las que se encuetra la cpu</li>
+	 * </ul>
+	 */
 	//Para analizar la celda sobre la que disparar hay que analizar sus digitos:
 	// 0 o 9 suponen fin de eje X o Y. 
 	private ArrayList<String> comprobarAlrededores(int celdaDisparada) {
@@ -622,17 +640,17 @@ public class MenuPrincipal extends JFrame {
 
 
 	}
-/**
- * <h2>comprobarSiCeldaEsAtacable</h2>
- *Metodo que comprueba si la cpu puede atacar ahi o no
- *
- * @param botones: un arrayList de botones
- * @param posicionAtacada: un int que tiene la posicion atacada
- * @return
- * <ul>
- * <li>devuelve un boolean que indica si la celda se puede atacar</li>
- * </ul>
- */
+	/**
+	 * <h2>comprobarSiCeldaEsAtacable</h2>
+	 *Metodo que comprueba si la cpu puede atacar ahi o no
+	 *
+	 * @param botones: un arrayList de botones
+	 * @param posicionAtacada: un int que tiene la posicion atacada
+	 * @return
+	 * <ul>
+	 * <li>devuelve un boolean que indica si la celda se puede atacar</li>
+	 * </ul>
+	 */
 	//Comprueba si la celda seleccionada puede recibir un ataque. No podra recibirlo si su estado es diferente a intacto o hay barco
 	private boolean comprobarSiCeldaEsAtacable(ArrayList<BotonesTablero> botones, int posicionAtacada) {
 
@@ -662,29 +680,47 @@ public class MenuPrincipal extends JFrame {
 	private boolean disparar(BotonesTablero boton) {
 
 		boolean disparoEfectuado = false;
+		Flota flota = null;
+		ArrayList <BotonesTablero> botones = new ArrayList <BotonesTablero>();
+		Barco barco;
+
+		//Con el turno de player1 analizamos la flota cpu para saber danyos causados
+		if(turnoPlayer1) flota = cpu.getFlota(); botones = cpu.getBotonesOponenente();
+
+		//Con el turno de CPU analizamos la flota cpu para saber danyos causados
+		if(!turnoPlayer1) flota = player.getFlota(); botones = player.getBotonesOponenente();
 
 		//Si en la celda ya se ha producido un disparo no permitimos disparo sobre ella de nuevo
 		if(boton.getValorCelda() == Cte.INTACTO) {
 
-			animacion();
-			boton.setValorCelda(Cte.AGUA);
+			boton.setValorCelda(Cte.AGUA);					
 			disparoEfectuado = true;
 
 		}
 
 		if(boton.getValorCelda() == Cte.HAY_BARCO) {
 
-			animacion();
 			boton.setValorCelda(Cte.TOCADO);
+			barco = flota.devuelveBarco(boton.getPosX(), boton.getPosY(),false);
+			comprobarSiHundido(boton);
 			disparoEfectuado = true;
 
+			if(comprobarSiHundido(boton)) {
 
-			if(comprobarSiHundido(boton)) System.out.println("HUNDIDO");
+				//Marcamos barco como hundido
+				barco.setHundido();
 
+				//Despues de hundir todos los botones de ese barco deben cambiar su imagen
+				modificarBotonesAlrededor(botones,boton);
+				System.out.println("SI");
+
+			}
 
 		}		
 
 		boton.asignarColorBoton();
+
+
 
 		return disparoEfectuado;
 
@@ -692,20 +728,94 @@ public class MenuPrincipal extends JFrame {
 
 	}
 
-	private void animacion() {
+
+	//Al hundir un barco todos los botones de alrededor deben cambiar su imagen
+	private void modificarBotonesAlrededor(ArrayList<BotonesTablero> botones, BotonesTablero boton) {
+
+		//Comprueba en sus alrededores si hay mas celdas tocadas
+		boolean izquierda =false;
+		boolean derecha =false;
+		boolean arriba =false;
+		boolean abajo =false;
+
+		boton.setValorCelda(Cte.HUNDIDO);
+
+		while(!izquierda) izquierda = mirarA("izquierda",botones,boton);
+		while(!derecha) derecha = mirarA("derecha",botones,boton);
+		while(!arriba) arriba = mirarA("arriba",botones,boton);	
+		while(!abajo) abajo = mirarA("abajo",botones,boton);
+	}
+	
+
+	//Observa el estado de los botones de alrededor para saber si el barco esta hundido
+	private boolean mirarA(String direccion, ArrayList<BotonesTablero> botones, BotonesTablero boton) {
+
+		int idBoton = boton.getId();	
+		boolean fin = false;
+		int valor = 0;
+
+		//Valores que incrementamos o restamos a idboton para obtener botones alrededor
+		if(direccion.equals("izquierda")) valor = -1;
+		if(direccion.equals("derecha"))   valor =  1;
+		if(direccion.equals("arriba"))    valor = -10;
+		if(direccion.equals("abajo"))     valor =  10;
+
+		while(!fin) {
+
+			idBoton = idBoton + valor;
+
+			if ((direccion.equals("izquierda")) && (idBoton < 0)) {
+
+				fin = true; break;
+			}
+
+			if ((direccion.equals("derecha"))   && (idBoton > 99)) {
 
 
+				fin = true; break;    
+			}
+
+
+			if ((direccion.equals("arriba"))   && (idBoton < 9)) {
+
+
+				fin = true; break;    
+			}
+
+			if ((direccion.equals("abajo"))   && (idBoton > 89)) {
+
+
+				fin = true; break;    
+			}
+
+			boton = botones.get(idBoton);
+
+			System.out.println(boton.getValorCelda());
+			if(boton.getValorCelda() == Cte.TOCADO) {
+
+				System.out.println(boton.getId());
+				boton.setValorCelda(Cte.HUNDIDO);
+				boton.asignarColorBoton();
+
+			}else {
+
+				fin = true;
+				break;
+			}
+
+		}
+		return fin;
 
 	}
-/**
- * <h2>comprobarSiHundido</h2>
- * Metodo que comprueba si el barco esta hundido
- * @param b: un barco para mirar si esta hundido o no
- * @return
- * <ul>
- * <li>devuelve un boolean que indica si se hundido o no</li>
- * </ul>
- */
+	/**
+	 * <h2>comprobarSiHundido</h2>
+	 * Metodo que comprueba si el barco esta hundido
+	 * @param b: un barco para mirar si esta hundido o no
+	 * @return
+	 * <ul>
+	 * <li>devuelve un boolean que indica si se hundido o no</li>
+	 * </ul>
+	 */
 	private boolean comprobarSiHundido(BotonesTablero b) {
 
 		boolean hundido = false;
@@ -725,15 +835,15 @@ public class MenuPrincipal extends JFrame {
 
 		return hundido;
 	}	
-/**
- * <h2>comprobarSiTodosHundidos</h2>
- * Metodo que comprueba si todos los barcos de la flota estan hundidos
- * @param flota: una flota que contiene todos los barcos de la CPU o del Jugador
- * @return 
- * <ul>
- * <li>devuelve un boolean indicando si estan todos los barcos hundidos</li>
- * </ul>
- */
+	/**
+	 * <h2>comprobarSiTodosHundidos</h2>
+	 * Metodo que comprueba si todos los barcos de la flota estan hundidos
+	 * @param flota: una flota que contiene todos los barcos de la CPU o del Jugador
+	 * @return 
+	 * <ul>
+	 * <li>devuelve un boolean indicando si estan todos los barcos hundidos</li>
+	 * </ul>
+	 */
 	//Este metodo devolvera true cuando la flota de cualquier jugador este destruida
 	private boolean comprobarSiTodosHundidos(Flota flota) {
 
@@ -745,8 +855,8 @@ public class MenuPrincipal extends JFrame {
 			Barco barco = listaBarcos.get(i);
 
 			if(!barco.saberSiHundido()) todosHundidos = false; break;
-		}
 
+		}
 
 		return todosHundidos;
 	}
@@ -756,13 +866,13 @@ public class MenuPrincipal extends JFrame {
 	 * @param referencia: un int que indica cual de las dos has llamado
 	 */
 	private void llamarVentanaAyuda(int referencia) {
-		
+
 		DialogoAyuda informacion = new DialogoAyuda(referencia);
-		
+
 		informacion.setVisible(true);
-		
+
 	}
-	
+
 	/**
 	 * <h2>reniciarPartida</h2>
 	 * Metodo que reinicia la partida si se le da en el menu a Nuevo Juego
@@ -771,7 +881,7 @@ public class MenuPrincipal extends JFrame {
 		dispose();
 		MenuPrincipal juego = new MenuPrincipal(this.imagenRuta, this.nombreJugador);
 		juego.setVisible(true);
-		
+
 	}
-	
+
 }

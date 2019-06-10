@@ -22,6 +22,14 @@ public class Flota {
 
 		this.misBarcos.add(b);
 	}
+	
+	
+	
+	//GETTERS AND SETTERS
+	public ArrayList<Barco> getMisBarcos() {
+		return misBarcos;
+	}
+
 
 	//Esta funcion devuelve un barco en las posiciones seleccionados. Si ademas ese barco tiene que recibir un impacto se modificara en esta misma funcion.
 	//Para impactar el barco debera llegar a esta funcion un true en el boolean impacto
@@ -43,7 +51,7 @@ public class Flota {
 					//Obtenemos el barco que coincide con las coordenadas
 					barco = misBarcos.get(i);
 					//Si ha de recibir impacto se setea en este if
-					if(impacto) barco.setValorATocado(x);
+					if(impacto) barco.setValor(x,Cte.TOCADO);
 					
 					break;
 				}			

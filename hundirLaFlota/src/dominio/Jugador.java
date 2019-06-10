@@ -1,5 +1,9 @@
 package dominio;
 
+import java.util.ArrayList;
+
+import interfaz.BotonesTablero;
+
 public abstract class Jugador {
 
 	//****************************
@@ -9,7 +13,8 @@ public abstract class Jugador {
 	public String nombreJugador;
 	public String imagenJugador;
 	protected Flota flota;
-	public int tablero[][]; 
+	public int tablero[][];
+	public ArrayList <BotonesTablero> botonesOponente;
 
 	//****************************
 	// Constructor
@@ -18,6 +23,7 @@ public abstract class Jugador {
 
 		this.flota   = new Flota();		
 		this.tablero = new int[Cte.NUM_FILAS][Cte.NUM_COLUMNAS];
+		botonesOponente = new ArrayList<BotonesTablero>();
 
 		this.iniciarPartida();
 	}
@@ -41,14 +47,28 @@ public abstract class Jugador {
 		//2.-
 		generarTablero();		
 	}	
-	
+
 	public Flota getFlota() {
-		
+
 		return flota;
 	}
 
-	
+	public ArrayList<BotonesTablero> getBotonesOponenente() {
 
+		return this.botonesOponente;
+	}
+
+	public BotonesTablero devuelveBoton(int celdaDisparada) {
+
+		return botonesOponente.get(celdaDisparada);
+	}
+	
+	public void anyadirBoton (BotonesTablero botonPlayer) {
+
+		botonesOponente.add(botonPlayer);
+
+	}
+		
 	private void generarTablero() {
 
 		//Recorrer todos los barcos

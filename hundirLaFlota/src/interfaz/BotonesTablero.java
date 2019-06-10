@@ -13,21 +13,23 @@ public class BotonesTablero extends JButton {
 	private int posX;
 	private int posY;
 	private int valorCelda;
+	private int id;
 
 	//CONSTRUCTOR
 	public BotonesTablero() {
 
-		this(0, 0, Cte.INTACTO);
+		this(0, 0, Cte.INTACTO,0);
 
 	}
 
-	public BotonesTablero(int x, int y, int valorCelda) {
+	public BotonesTablero(int x, int y, int valorCelda, int id) {
 
 		super();
 		this.setBorder(new LineBorder(new Color(0, 0, 0), 2, true));
 		this.posX = x;
 		this.posY = y;
 		this.valorCelda = valorCelda;
+		this.id = id;
 
 		asignarColorBoton();
 	}
@@ -35,24 +37,6 @@ public class BotonesTablero extends JButton {
 	//Setters And Getters
 	public void setPosX(int valor) {
 		this.posX = valor;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		BotonesTablero other = (BotonesTablero) obj;
-		if (posX != other.posX)
-			return false;
-		if (posY != other.posY)
-			return false;
-		if (valorCelda != other.valorCelda)
-			return false;
-		return true;
 	}
 
 	public void setPosY(int valor) {
@@ -75,6 +59,17 @@ public class BotonesTablero extends JButton {
 		return this.valorCelda;
 	}
 
+	public void setId (int id) {
+
+		this.id = id;
+	}
+	
+	public int getId () {
+		
+		return this.id;
+	}
+
+
 	//Funciones
 	public void asignarColorBoton() {
 
@@ -88,7 +83,7 @@ public class BotonesTablero extends JButton {
 
 		//Agua
 		if(this.valorCelda == Cte.AGUA) {
-			
+
 			this.setBackground(Color.CYAN);
 			this.setIcon(new ImageIcon(BotonesTablero.class.getResource("/interfaz/img/bombaAgua.png")));
 		}
@@ -99,11 +94,13 @@ public class BotonesTablero extends JButton {
 			this.setBackground(Color.RED);
 			this.setIcon(new ImageIcon(BotonesTablero.class.getResource("/interfaz/img/explosion.png")));
 		}
-		
+
 		//Hundido
 		if(this.valorCelda == Cte.HUNDIDO) {
 			this.setOpaque(true);
 			this.setBackground(Color.BLACK);
+			this.setIcon(new ImageIcon(BotonesTablero.class.getResource("/interfaz/img/calavera.png")));
+
 		}
 
 	}	

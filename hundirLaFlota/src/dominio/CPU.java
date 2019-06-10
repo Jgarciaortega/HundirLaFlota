@@ -1,6 +1,7 @@
 package dominio;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 public class CPU extends Jugador {
 
@@ -83,14 +84,52 @@ public class CPU extends Jugador {
 
 	@Override
 	public void generarBarcos() {
-
+		
+				
 		Barco b = new Barco(2);		
 		this.flota.insertarBarco(b);
 
-		b = new Barco(3);		
+		
+		
+		b = new Barco(4);		
 		this.flota.insertarBarco(b);
 
 	}
+	
+	
+	
+	public boolean comprobarSiCeldasEstanDisponibles(Barco barco) {
+		
+		Flota flota = this.getFlota();
+		
+		ArrayList <Barco> listaBarcos = flota.misBarcos;
+				
+		for(int i = 0; i < listaBarcos.size(); i++) {
+			
+			Barco barco2 = listaBarcos.get(i);
+			
+			int posicionesBarco[][]= barco.getPosiciones();
+			int posicionesBarco2[][]= barco.getPosiciones();
+			
+			for(int y = 0; y < posicionesBarco.length; y++) {
+				
+				for(int z = 0; z < 1; z++) {
+					
+					
+					if(posicionesBarco[y][z] == posicionesBarco2[y][z]) {
+						
+						
+					}
+					
+				}
+								
+			}			
+			
+		}
+			
+		return true;
+	}
+	
 
 	//para generar la foto de la CPU
 	public String generarFoto(int nombreCPU) {
